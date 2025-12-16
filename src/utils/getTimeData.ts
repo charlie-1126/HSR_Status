@@ -92,19 +92,21 @@ async function getTimeData() {
     // 워프 정보(고정적)
     const warpTime = [];
     for (const warp of calendar.avatar_card_pool_list) {
-        const characters = [];
-        for (const char of warp.avatar_list) {
-            if (char.rarity == "5") {
-                characters.push(char.item_name);
+        if (now.isAfter(dayjs(warp.time_info.start_ts * 1000))) {
+            const characters = [];
+            for (const char of warp.avatar_list) {
+                if (char.rarity == "5") {
+                    characters.push(char.item_name);
+                }
             }
+            warpTime.push({
+                id: warp.id,
+                gameversion: warp.version,
+                startTime: dayjs(warp.time_info.start_ts * 1000).tz("Asia/Seoul"),
+                endTime: dayjs(warp.time_info.end_ts * 1000).tz("Asia/Seoul"),
+                characters: characters,
+            });
         }
-        warpTime.push({
-            id: warp.id,
-            gameversion: warp.version,
-            startTime: dayjs(warp.time_info.start_ts * 1000).tz("Asia/Seoul"),
-            endTime: dayjs(warp.time_info.end_ts * 1000).tz("Asia/Seoul"),
-            characters: characters,
-        });
     }
     warpTime.sort((a, b) => a.endTime.valueOf() - b.endTime.valueOf());
     if (warpTime[warpTime.length - 1].gameversion != gameversion) {
@@ -195,11 +197,11 @@ function formatTime(timedata: Awaited<ReturnType<typeof getTimeData>>): string {
     }
 
     const data = timedata.data;
-    return `## 대규모 업데이트\n- 버전 업데이트: <t:${data.versionUpdate.unix()}:R>\n- 프리뷰 스페셜 프로그램: <t:${data.previewProgramTime.unix()}:R>\n- 무명의 공훈 종료: <t:${data.passEndTime.unix()}:R>\n\n## 워프\n${data.warpTime
+    return `## 대규모 업데이트\n- 버전 업데이트: <t:${data.versionUpdate.unix()}:R>\n- 프리뷰 스페셜 프로그램: <t:${data.previewProgramTime.unix()}:R>\n- 무명의 공훈 종료: <t:${data.passEndTime.unix()}:R>\n\n## 워프\n${data.warpTime.length > 0 ? data.warpTime
         .map((warp: any) => `- ${warp.characters.join(", ")} 픽업 종료: <t:${warp.endTime.unix()}:R>`)
         .join(
             "\n"
-        )}\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 업데이트: <t:${data.peakEndTime.unix()}:R>\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
+        ) : "- 현재 진행중인 워프가 없습니다."}\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 업데이트: <t:${data.peakEndTime.unix()}:R>\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
         data.gameversion
     }\n-# last updated at <t:${dayjs().unix()}:s>`;
 }
