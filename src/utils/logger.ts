@@ -16,15 +16,23 @@ if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
 }
 
-// 로그 파일이 너무 커지지 않도록 주기적으로 정리 (10MB 이상이면 백업 후 새로 시작)
+// 로그 파일이 너무 커지지 않도록 최신 5MB만 유지
 function checkLogFileSize() {
     if (fs.existsSync(logFilePath)) {
         const stats = fs.statSync(logFilePath);
-        if (stats.size > 10 * 1024 * 1024) {
-            // 10MB
-            const backupPath = path.join(logsDir, `log_${dayjs().format("YYYY-MM-DD_HH-mm-ss")}.txt`);
-            fs.renameSync(logFilePath, backupPath);
-            console.log(`로그 파일이 백업되었습니다: ${backupPath}`);
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (stats.size > maxSize) {
+            // 파일을 읽어서 최신 로그만 유지
+            const content = fs.readFileSync(logFilePath, "utf-8");
+            const lines = content.split("\n");
+
+            // 대략 절반 정도의 최신 로그만 유지
+            const keepLines = Math.floor(lines.length / 2);
+            const newContent = lines.slice(-keepLines).join("\n");
+
+            fs.writeFileSync(logFilePath, newContent, "utf-8");
+            console.log(`로그 파일 크기 초과로 오래된 로그를 정리했습니다.`);
         }
     }
 }
