@@ -92,24 +92,22 @@ async function getTimeData() {
     // 워프 정보(고정적)
     const warpTime = [];
     for (const warp of calendar.avatar_card_pool_list) {
-        if (now.isAfter(dayjs(warp.time_info.start_ts * 1000))) {
-            const characters = [];
-            for (const char of warp.avatar_list) {
-                if (char.rarity == "5") {
-                    characters.push(char.item_name);
-                }
+        const characters = [];
+        for (const char of warp.avatar_list) {
+            if (char.rarity == "5") {
+                characters.push(char.item_name);
             }
-            warpTime.push({
-                id: warp.id,
-                gameversion: warp.version,
-                startTime: dayjs(warp.time_info.start_ts * 1000).tz("Asia/Seoul"),
-                endTime: dayjs(warp.time_info.end_ts * 1000).tz("Asia/Seoul"),
-                characters: characters,
-            });
         }
+        warpTime.push({
+            id: warp.id,
+            gameversion: warp.version,
+            startTime: dayjs(warp.time_info.start_ts * 1000).tz("Asia/Seoul"),
+            endTime: dayjs(warp.time_info.end_ts * 1000).tz("Asia/Seoul"),
+            characters: characters,
+        });
     }
     warpTime.sort((a, b) => a.endTime.valueOf() - b.endTime.valueOf());
-    if (warpTime[warpTime.length - 1].gameversion != gameversion) {
+    if (warpTime.length > 0 && warpTime[warpTime.length - 1].gameversion != gameversion) {
         const calculatedNextNextVersion = warpTime[warpTime.length - 1].endTime
             .add(1, "d")
             .set("hour", 12)
@@ -174,7 +172,7 @@ async function getTimeData() {
             versionUpdate: nextversionUpdate,
             previewProgramTime: previewProgramTime,
             passEndTime: passEndTime,
-            warpTime: warpTime,
+            warpTime: warpTime.filter((i) => {return now.isAfter(i.startTime)}),
             bossEndTime: challenges["ChallengeTypeBoss"].endTime,
             storyEndTime: challenges["ChallengeTypeStory"].endTime,
             chaosEndTime: challenges["ChallengeTypeChasm"].endTime,
