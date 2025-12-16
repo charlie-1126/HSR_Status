@@ -12,8 +12,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-// 이전에 포맷된 메시지 내용을 저장
-let previousFormattedMessage: string | null = null;
+// 이전 데이터를 저장하기 위한 변수 (JSON 형식으로 저장)
+let previousTimeData: string | null = null;
 
 export async function updateRotationData(client?: Client) {
     try {
@@ -24,26 +24,54 @@ export async function updateRotationData(client?: Client) {
             return;
         }
 
-        // 실제 표시될 메시지 포맷
-        const currentFormattedMessage = formatTime(timedata);
+        // 타입 가드: data가 문자열이 아닌 객체인지 확인
+        if (typeof timedata.data === "string") {
+            logError("updateRotationData", "타임 데이터가 문자열입니다", timedata.data);
+            return;
+        }
+
+        // dayjs 객체를 unix timestamp로 변환하여 비교 가능하게 만듦
+        const dataForComparison = {
+            gameversion: timedata.data.gameversion,
+            versionUpdate: timedata.data.versionUpdate.unix(),
+            previewProgramTime: timedata.data.previewProgramTime.unix(),
+            passEndTime: timedata.data.passEndTime ? timedata.data.passEndTime.unix() : null,
+            warpTime: timedata.data.warpTime.map((w: any) => ({
+                id: w.id,
+                gameversion: w.gameversion,
+                startTime: w.startTime.unix(),
+                endTime: w.endTime.unix(),
+                characters: w.characters,
+            })),
+            bossEndTime: timedata.data.bossEndTime.unix(),
+            storyEndTime: timedata.data.storyEndTime.unix(),
+            chaosEndTime: timedata.data.chaosEndTime.unix(),
+            peakEndTime: timedata.data.peakEndTime.unix(),
+            currencyWarUpdateTime: timedata.data.currencyWarUpdateTime.unix(),
+            simulationUpdateTime: timedata.data.simulationUpdateTime.unix(),
+            dailyResetTime: timedata.data.dailyResetTime.unix(),
+            weeklyResetTime: timedata.data.weeklyResetTime.unix(),
+        };
+
+        const currentTimeDataStr = JSON.stringify(dataForComparison);
 
         // 표시되는 데이터 변경 확인
         let needsUpdate = false;
 
-        if (previousFormattedMessage !== null) {
-            // 이전 메시지와 현재 메시지 비교
-            if (previousFormattedMessage !== currentFormattedMessage) {
-                logToFile("updateRotationData", "표시 데이터 변경 감지");
+        if (previousTimeData !== null) {
+            // 이전 데이터와 현재 데이터 비교
+            if (previousTimeData !== currentTimeDataStr) {
+                logToFile("updateRotationData", "타임 데이터 변경 감지");
                 needsUpdate = true;
             }
         } else {
             // 첫 실행 시 데이터 저장만 하고 업데이트는 스케줄러가 처리
-            previousFormattedMessage = currentFormattedMessage;
+            previousTimeData = currentTimeDataStr;
         }
 
         // 이전 데이터 업데이트
         if (needsUpdate) {
-            previousFormattedMessage = currentFormattedMessage;
+            previousTimeData = currentTimeDataStr;
         }
 
         const offsetData = getOffset();
