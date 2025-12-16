@@ -1,6 +1,7 @@
 import { fetchActCalendar } from "../utils/fetchEvent";
 import { getOffset, setOffset } from "./getOffset";
 import { updateAllMessages } from "./updateMessages";
+import { getTimeData, formatTime } from "../utils/getTimeData";
 import { Client } from "discord.js";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
@@ -11,51 +12,42 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-// 이전 데이터를 저장하기 위한 변수
-let previousCalendarData: any = null;
+// 이전에 포맷된 메시지 내용을 저장
+let previousFormattedMessage: string | null = null;
 
 export async function updateRotationData(client?: Client) {
     try {
-        const response = await fetchActCalendar();
-        if (response.message !== "OK") {
-            logError("updateRotationData", `API 요청 실패: ${response.message}`);
+        // 현재 타임 데이터 가져오기
+        const timedata = await getTimeData();
+        if (timedata.error) {
+            logError("updateRotationData", "타임 데이터 가져오기 실패", timedata.data);
             return;
         }
 
-        const offsetData = getOffset();
-        const now = dayjs();
-        const calendar = response.data;
+        // 실제 표시될 메시지 포맷
+        const currentFormattedMessage = formatTime(timedata);
 
-        // API 데이터 변경 확인
+        // 표시되는 데이터 변경 확인
         let needsUpdate = false;
 
-        if (previousCalendarData) {
-            // 게임 버전 변경 확인
-            if (previousCalendarData.cur_game_version !== calendar.cur_game_version) {
-                logToFile(
-                    "updateRotationData",
-                    `게임 버전 변경 감지: ${previousCalendarData.cur_game_version} -> ${calendar.cur_game_version}`
-                );
-                needsUpdate = true;
-            }
-
-            // 이벤트 수 변경 확인
-            if (
-                previousCalendarData.challenge_list.length !== calendar.challenge_list.length ||
-                previousCalendarData.avatar_card_pool_list.length !== calendar.avatar_card_pool_list.length
-            ) {
-                logToFile("updateRotationData", "이벤트 또는 워프 수 변경 감지");
+        if (previousFormattedMessage !== null) {
+            // 이전 메시지와 현재 메시지 비교
+            if (previousFormattedMessage !== currentFormattedMessage) {
+                logToFile("updateRotationData", "표시 데이터 변경 감지");
                 needsUpdate = true;
             }
         } else {
             // 첫 실행 시 데이터 저장만 하고 업데이트는 스케줄러가 처리
-            previousCalendarData = calendar;
+            previousFormattedMessage = currentFormattedMessage;
         }
 
         // 이전 데이터 업데이트
         if (needsUpdate) {
-            previousCalendarData = calendar;
+            previousFormattedMessage = currentFormattedMessage;
         }
+
+        const offsetData = getOffset();
+        const now = dayjs();
 
         // 버전 업데이트 날짜 확인 및 오프셋 만료 처리
         let offsetExpired = false;

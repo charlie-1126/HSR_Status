@@ -121,7 +121,7 @@ async function getTimeData() {
     }
 
     // 공훈 정보
-    let passEndTime: ReturnType<typeof dayjs>;
+    let passEndTime: ReturnType<typeof dayjs> | null = null;
 
     if (offsetData.passEndTime) {
         const offsetPassEndTime = dayjs(offsetData.passEndTime);
@@ -135,8 +135,8 @@ async function getTimeData() {
         passEndTime = nextversionUpdate.subtract(2, "d").set("hour", 4).set("minute", 59).set("second", 59);
     }
 
-    if (now.isAfter(passEndTime) && nextnextversionUpdate != null) {
-        passEndTime = nextnextversionUpdate.subtract(2, "d").set("hour", 4).set("minute", 59).set("second", 59);
+    if (now.isAfter(passEndTime)) {
+        passEndTime = null;
     }
 
     // 프리뷰 방송 정보
@@ -172,11 +172,15 @@ async function getTimeData() {
             versionUpdate: nextversionUpdate,
             previewProgramTime: previewProgramTime,
             passEndTime: passEndTime,
-            warpTime: warpTime.filter((i) => {return now.isAfter(i.startTime)}),
+            warpTime: warpTime.filter((i) => {
+                return now.isAfter(i.startTime);
+            }),
             bossEndTime: challenges["ChallengeTypeBoss"].endTime,
             storyEndTime: challenges["ChallengeTypeStory"].endTime,
             chaosEndTime: challenges["ChallengeTypeChasm"].endTime,
-            peakEndTime: challenges["ChallengeTypePeak"].endTime.tz("Asia/Seoul").set("hour", 12),
+            peakEndTime: challenges["ChallengeTypePeak"]
+                ? challenges["ChallengeTypePeak"].endTime.tz("Asia/Seoul").set("hour", 12)
+                : dayjs().tz("Asia/Seoul").set("hour", 12).set("minute", 0).set("second", 0),
             currencyWarUpdateTime: battleUpdateTime["currencyWar"],
             simulationUpdateTime: battleUpdateTime["simulation"],
             dailyResetTime: dailyResetTime,
@@ -195,11 +199,15 @@ function formatTime(timedata: Awaited<ReturnType<typeof getTimeData>>): string {
     }
 
     const data = timedata.data;
-    return `## 대규모 업데이트\n- 버전 업데이트: <t:${data.versionUpdate.unix()}:R>\n- 프리뷰 스페셜 프로그램: <t:${data.previewProgramTime.unix()}:R>\n- 무명의 공훈 종료: <t:${data.passEndTime.unix()}:R>\n\n## 워프\n${data.warpTime.length > 0 ? data.warpTime
-        .map((warp: any) => `- ${warp.characters.join(", ")} 픽업 종료: <t:${warp.endTime.unix()}:R>`)
-        .join(
-            "\n"
-        ) : "- 현재 진행중인 워프가 없습니다."}\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 업데이트: <t:${data.peakEndTime.unix()}:R>\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
+    return `## 대규모 업데이트\n- 버전 업데이트: <t:${data.versionUpdate.unix()}:R>\n- 프리뷰 스페셜 프로그램: <t:${data.previewProgramTime.unix()}:R>\n- 무명의 공훈 종료: ${
+        data.passEndTime ? `<t:${data.passEndTime.unix()}:R>` : "종료됨"
+    }\n\n## 워프\n${
+        data.warpTime.length > 0
+            ? data.warpTime
+                  .map((warp: any) => `- ${warp.characters.join(", ")} 픽업 종료: <t:${warp.endTime.unix()}:R>`)
+                  .join("\n")
+            : "- 현재 진행중인 워프가 없습니다."
+    }\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 업데이트: <t:${data.peakEndTime.unix()}:R>\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
         data.gameversion
     }\n-# last updated at <t:${dayjs().unix()}:s>`;
 }
