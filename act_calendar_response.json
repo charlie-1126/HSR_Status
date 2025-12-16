@@ -1,0 +1,995 @@
+{
+  "retcode": 0,
+  "message": "OK",
+  "data": {
+    "avatar_card_pool_list": [
+      {
+        "name": "",
+        "type": "CardPoolRole",
+        "avatar_list": [
+          {
+            "item_id": "1321",
+            "item_name": "달리아",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/pre_webtool_cn/item_icon_ua3f6b/3f862126a08c8e2a015c26e815d24c3d.png",
+            "damage_type": "2",
+            "rarity": "5",
+            "avatar_base_type": "5",
+            "is_forward": true,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/4060",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/pre_webtool_cn/item_icon_ua3f6b/91a5f26b08ea9b0058515f1f432d5ae0.png",
+            "damage_type_name": ""
+          },
+          {
+            "item_id": "1310",
+            "item_name": "반디",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/b250007ee202c838f85ffece226666c8.png",
+            "damage_type": "2",
+            "rarity": "5",
+            "avatar_base_type": "1",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/2494",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/11335257c0de89349fd832a5ab0151e3.png",
+            "damage_type_name": "fire"
+          },
+          {
+            "item_id": "1301",
+            "item_name": "갤러거",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/104afc9f7ef17e683b063c0fa9de73b9.png",
+            "damage_type": "2",
+            "rarity": "4",
+            "avatar_base_type": "7",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/1924",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/bd4b4f9183bdcfdbd7e9bd172be35623.png",
+            "damage_type_name": "fire"
+          },
+          {
+            "item_id": "1111",
+            "item_name": "루카",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8ff9ffab5a3ecca36d14d7d057efb988.png",
+            "damage_type": "1",
+            "rarity": "4",
+            "avatar_base_type": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/801",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/aa8f27a52ee2e81dc1ef52b04bf3a16e.png",
+            "damage_type_name": "physical"
+          },
+          {
+            "item_id": "1001",
+            "item_name": "Mar. 7th",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/d7f7417948e415cbd39f6ac3798a5e37.png",
+            "damage_type": "4",
+            "rarity": "4",
+            "avatar_base_type": "6",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/7?lang=ko-kr",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/509372decd30a3bd4522d3fa3f76f6b4.png",
+            "damage_type_name": "ice"
+          }
+        ],
+        "equip_list": [],
+        "is_after_version": true,
+        "time_info": {
+          "start_ts": "1765936800",
+          "end_ts": "1767758340",
+          "start_time": "2025-12-17 10:00:00",
+          "end_time": "2026-01-07 11:59:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "57",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      },
+      {
+        "name": "",
+        "type": "CardPoolRole",
+        "avatar_list": [
+          {
+            "item_id": "1225",
+            "item_name": "망귀인",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/5f91169a643752fb6935377911ae0ec8.png",
+            "damage_type": "2",
+            "rarity": "5",
+            "avatar_base_type": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3151",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/29c49c3191adfac483e05cc5c37d2235.png",
+            "damage_type_name": "fire"
+          },
+          {
+            "item_id": "1222",
+            "item_name": "영사",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/ec78cec22944b43313fa19aa217f97cc.png",
+            "damage_type": "2",
+            "rarity": "5",
+            "avatar_base_type": "7",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/2948",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/51575bdedf4753cf86ca16397cfde0c2.png",
+            "damage_type_name": "fire"
+          },
+          {
+            "item_id": "1108",
+            "item_name": "삼포",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/b197f47b3de4b693ecede63671651e9a.png",
+            "damage_type": "16",
+            "rarity": "4",
+            "avatar_base_type": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/21",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/d9c26cb15c494a793a927a20b4c307a5.png",
+            "damage_type_name": "wind"
+          },
+          {
+            "item_id": "1105",
+            "item_name": "나타샤",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/6c898d1a37ec3f26739be8408b00f874.png",
+            "damage_type": "1",
+            "rarity": "4",
+            "avatar_base_type": "7",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/18",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/be488928c59a7208be0ce0c6f394bbdb.png",
+            "damage_type_name": "physical"
+          },
+          {
+            "item_id": "1008",
+            "item_name": "아를란",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/006b05646bc1413026b25d7f410dc8ae.png",
+            "damage_type": "8",
+            "rarity": "4",
+            "avatar_base_type": "1",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/11",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/021da2ee657edc6918af74022167d904.png",
+            "damage_type_name": "lightning"
+          }
+        ],
+        "equip_list": [],
+        "is_after_version": false,
+        "time_info": {
+          "start_ts": "1767758400",
+          "end_ts": "1769572740",
+          "start_time": "2026-01-07 12:00:00",
+          "end_time": "2026-01-28 11:59:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "59",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      },
+      {
+        "name": "",
+        "type": "CardPoolRole",
+        "avatar_list": [
+          {
+            "item_id": "1402",
+            "item_name": "아글라이아",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/277ff451cd9c8d2f6759901f3d69087b.png",
+            "damage_type": "8",
+            "rarity": "5",
+            "avatar_base_type": "8",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3286",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/b8b6469ca83a5dc23edf2f0e645bb90c.png",
+            "damage_type_name": "lightning"
+          },
+          {
+            "item_id": "1313",
+            "item_name": "선데이",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/989be2aab1ddf322e7cdfdfe076dad62.png",
+            "damage_type": "64",
+            "rarity": "5",
+            "avatar_base_type": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3150",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/68baaf7109e3534e7f15afa2a7b6c256.png",
+            "damage_type_name": "imaginary"
+          },
+          {
+            "item_id": "1207",
+            "item_name": "어공",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/9444ff44022893fbf4e7e23a87963165.png",
+            "damage_type": "64",
+            "rarity": "4",
+            "avatar_base_type": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/712",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/6f12f415ad1b8ca1953adc9a9cd59d2d.png",
+            "damage_type_name": "imaginary"
+          },
+          {
+            "item_id": "1202",
+            "item_name": "정운",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/2ff52016e19f746753a70cf1ef1ae863.png",
+            "damage_type": "8",
+            "rarity": "4",
+            "avatar_base_type": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/25",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/0b95758e65d2a323f9c0fc237275a160.png",
+            "damage_type_name": "lightning"
+          },
+          {
+            "item_id": "1002",
+            "item_name": "단항",
+            "icon_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/e318d24d6129c10750cc86c669138285.png",
+            "damage_type": "16",
+            "rarity": "4",
+            "avatar_base_type": "2",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/8",
+            "item_avatar_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/a62461449c237514afb97d3b4c528e65.png",
+            "damage_type_name": "wind"
+          }
+        ],
+        "equip_list": [],
+        "is_after_version": false,
+        "time_info": {
+          "start_ts": "1769572800",
+          "end_ts": "1770879600",
+          "start_time": "2026-01-28 12:00:00",
+          "end_time": "2026-02-12 15:00:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "61",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      }
+    ],
+    "equip_card_pool_list": [
+      {
+        "name": "",
+        "type": "CardPoolEquipment",
+        "avatar_list": [],
+        "equip_list": [
+          {
+            "item_id": "23050",
+            "item_name": "그녀의 불꽃을 잊지 말라",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/pre_webtool_cn/item_icon_ua3f6b/ec07152713c6198b7171bc18ff661e0a.png",
+            "avatar_base_type": "5",
+            "rarity": "5",
+            "is_forward": true,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/4717"
+          },
+          {
+            "item_id": "23025",
+            "item_name": "꿈은 어디로 돌아가야 하는가",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/81908db525ab3be2e43108d2675a8d35.png",
+            "avatar_base_type": "1",
+            "rarity": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/2645"
+          },
+          {
+            "item_id": "21043",
+            "item_name": "두 사람의 콘서트",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/987adf1d1cc565537c191302423ce891.png",
+            "avatar_base_type": "6",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/2371"
+          },
+          {
+            "item_id": "21004",
+            "item_name": "기억 속 모습",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/cf2816a3cbc2ea636ac0617eadbb8cbb.png",
+            "avatar_base_type": "4",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/48"
+          },
+          {
+            "item_id": "21001",
+            "item_name": "밤 인사와 잠든 얼굴",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8e03ebec53f94147218e2d07bbe224c3.png",
+            "avatar_base_type": "5",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/45"
+          }
+        ],
+        "is_after_version": true,
+        "time_info": {
+          "start_ts": "1765936800",
+          "end_ts": "1767758340",
+          "start_time": "2025-12-17 10:00:00",
+          "end_time": "2026-01-07 11:59:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "58",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      },
+      {
+        "name": "",
+        "type": "CardPoolEquipment",
+        "avatar_list": [],
+        "equip_list": [
+          {
+            "item_id": "23035",
+            "item_name": "먼 길 끝의 귀로",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/98f282ddaff84ee434e5cd0d0859fe09.png",
+            "avatar_base_type": "5",
+            "rarity": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3292"
+          },
+          {
+            "item_id": "23032",
+            "item_name": "오직 향만이 변함없이",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3acfdb0b22d6a02fdda1445d0eec3292.png",
+            "avatar_base_type": "7",
+            "rarity": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3068"
+          },
+          {
+            "item_id": "21020",
+            "item_name": "천재들의 휴식",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8ced58cc5726ce052398ea3cef172f43.png",
+            "avatar_base_type": "3",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/595"
+          },
+          {
+            "item_id": "21005",
+            "item_name": "두더지파가 환영해",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/bad8c56b67152bfd2575e24635294eaa.png",
+            "avatar_base_type": "1",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/49"
+          },
+          {
+            "item_id": "21000",
+            "item_name": "수술 후의 대화",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/95db60b477d0ee073b88759f7bbc90de.png",
+            "avatar_base_type": "7",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/44"
+          }
+        ],
+        "is_after_version": false,
+        "time_info": {
+          "start_ts": "1767758400",
+          "end_ts": "1769572740",
+          "start_time": "2026-01-07 12:00:00",
+          "end_time": "2026-01-28 11:59:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "60",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      },
+      {
+        "name": "",
+        "type": "CardPoolEquipment",
+        "avatar_list": [],
+        "equip_list": [
+          {
+            "item_id": "23036",
+            "item_name": "시간을 황금으로 엮어",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3cac66087f9517afbb543077e8ebfa5a.png",
+            "avatar_base_type": "8",
+            "rarity": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3330"
+          },
+          {
+            "item_id": "23034",
+            "item_name": "대지로 돌아온 비행",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/fcf04d9329c1d3443491ba663d34e2b1.png",
+            "avatar_base_type": "4",
+            "rarity": "5",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3288"
+          },
+          {
+            "item_id": "21051",
+            "item_name": "천재들의 안부 인사",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/d695d8e9b52caf661ef6f3b989a4d6ba.png",
+            "avatar_base_type": "8",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3328"
+          },
+          {
+            "item_id": "21016",
+            "item_name": "우주 시장 동향",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/0efa30d471033dc68c8811c7f747477a.png",
+            "avatar_base_type": "6",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/591"
+          },
+          {
+            "item_id": "21018",
+            "item_name": "댄스! 댄스! 댄스!",
+            "item_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/9f2f9f54afc4bf7d13bc2eb2b3984314.png",
+            "avatar_base_type": "4",
+            "rarity": "4",
+            "is_forward": false,
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/593"
+          }
+        ],
+        "is_after_version": false,
+        "time_info": {
+          "start_ts": "1769572800",
+          "end_ts": "1770879600",
+          "start_time": "2026-01-28 12:00:00",
+          "end_time": "2026-02-12 15:00:00",
+          "now": "1765895948"
+        },
+        "version": "3.8",
+        "id": "62",
+        "gacha_time_type": "GachaTimeTypeDefault"
+      }
+    ],
+    "act_list": [
+      {
+        "id": 216,
+        "version": "3.7",
+        "name": "화폐 전쟁•제로섬 게임",
+        "act_type": "ActivityTypeGridFight",
+        "act_status": "RogueTournActStatusFinish",
+        "reward_list": [
+          {
+            "item_id": 238,
+            "name": "변수 주사위",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/4a65eea5df59347a2189d749a09f1533.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3353",
+            "num": 2,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 236,
+            "name": "자가 변형성 레진",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/9e43d99df4ae434a35e7da638799cd60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/616",
+            "num": 2,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 241,
+            "name": "운명의 발자취",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/c8d9f4c8eb28385f020fff70d4f73a7a.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/250",
+            "num": 3,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 1,
+            "name": "성옥",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+            "num": 4000,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 235,
+            "name": "유물 잔해",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/257304a209164230822d13ee052136e7.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/617",
+            "num": 0,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 202041,
+            "name": "최후의 승자",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/788b4ae7f71d1c760b24c1ed6fc5b675.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/4121",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 110101,
+            "name": "꿈의 눈물",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/a5940100233e89c9dace8c286a718a56.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/1816",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 110,
+            "name": "연소 촉진 티켓",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/48ec6696a2584693051698a7fca9e64b.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3785",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 213,
+            "name": "여행 가이드",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/506b481e6baeaa10ac2cef9566990816.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/330",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 223,
+            "name": "정제한 에테르",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/4aacdb0ba25631182644ff160caaab94.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/225",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 233,
+            "name": "유실된 수정덩이",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3887e95e51550c5a00a0a059e5d6150f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/283",
+            "num": 0,
+            "rarity": "4",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 2,
+            "name": "신용 포인트",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/01ab53e6a7cf571739e59bf335a9b2c3.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/181",
+            "num": 0,
+            "rarity": "3",
+            "reward_type": "RewardTypeNormal"
+          }
+        ],
+        "total_progress": 80,
+        "current_progress": 80,
+        "time_info": {
+          "start_ts": "0",
+          "end_ts": "0",
+          "start_time": "",
+          "end_time": "",
+          "now": "1765895948"
+        },
+        "panel_id": 71002,
+        "panel_desc": "전략투자부가 약간의 문제에 봉착한 것 같다. 하지만 당신에게 있어 이건 자본 게임에 직접 참여할 기회다. 이 기회를 놓치지 말고, 자산의 세계에서 자신만의 길을 개척해 보는 건 어떨까?",
+        "strategy": "",
+        "multiple_drop_type": 0,
+        "multiple_drop_type_list": [],
+        "count_refresh_type": 0,
+        "count_value": 0,
+        "drop_multiple": 0,
+        "is_after_version": false,
+        "sort_weight": 6005,
+        "special_reward": {
+          "item_id": 1,
+          "name": "성옥",
+          "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+          "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+          "num": 4000,
+          "rarity": "5",
+          "reward_type": "RewardTypeNormal"
+        },
+        "all_finished": true,
+        "show_text": "进行中",
+        "act_time_type": "ActTimeTypeLong"
+      },
+      {
+        "id": 219,
+        "version": "3.7",
+        "name": "별들의 동행자",
+        "act_type": "ActivityTypeOther",
+        "act_status": "OtherActStatusFinish",
+        "reward_list": [
+          {
+            "item_id": 281,
+            "name": "동행•금빛 영혼",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/cf47b7da77e038e99c24a779bdce497a.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/3710",
+            "num": 1,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          }
+        ],
+        "total_progress": 1,
+        "current_progress": 1,
+        "time_info": {
+          "start_ts": "1762297200",
+          "end_ts": "1773183599",
+          "start_time": "2025-11-05 07:00:00",
+          "end_time": "2026-03-11 06:59:59",
+          "now": "1765895948"
+        },
+        "panel_id": 10125,
+        "panel_desc": "",
+        "strategy": "",
+        "multiple_drop_type": 0,
+        "multiple_drop_type_list": [],
+        "count_refresh_type": 0,
+        "count_value": 0,
+        "drop_multiple": 0,
+        "is_after_version": true,
+        "sort_weight": 7920,
+        "special_reward": {
+          "item_id": 0,
+          "name": "",
+          "icon": "",
+          "wiki_url": "",
+          "num": 0,
+          "rarity": "0",
+          "reward_type": "RewardTypeNormal"
+        },
+        "all_finished": true,
+        "show_text": "",
+        "act_time_type": "ActTimeTypeDefault"
+      },
+      {
+        "id": 4,
+        "version": "3.7",
+        "name": "과거에서 온 편지",
+        "act_type": "ActivityTypeOther",
+        "act_status": "OtherActStatusFinish",
+        "reward_list": [
+          {
+            "item_id": 102,
+            "name": "별의 궤도 전용티켓",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/119921dc3657418ba7e79d677ee05b2b.png",
+            "wiki_url": "",
+            "num": 10,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          },
+          {
+            "item_id": 821,
+            "name": "어제의 내일이 되어",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/623c9e777f5dbe4fad01ab8d5b7a589b.png",
+            "wiki_url": "",
+            "num": 0,
+            "rarity": "5",
+            "reward_type": "RewardTypeNormal"
+          }
+        ],
+        "total_progress": 1,
+        "current_progress": 1,
+        "time_info": {
+          "start_ts": "1762344240",
+          "end_ts": "1765922400",
+          "start_time": "2025-11-05 20:04:00",
+          "end_time": "2025-12-17 06:00:00",
+          "now": "1765895948"
+        },
+        "panel_id": 4,
+        "panel_desc": "",
+        "strategy": "",
+        "multiple_drop_type": 0,
+        "multiple_drop_type_list": [],
+        "count_refresh_type": 0,
+        "count_value": 0,
+        "drop_multiple": 0,
+        "is_after_version": false,
+        "sort_weight": 0,
+        "special_reward": {
+          "item_id": 102,
+          "name": "별의 궤도 전용티켓",
+          "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/119921dc3657418ba7e79d677ee05b2b.png",
+          "wiki_url": "",
+          "num": 10,
+          "rarity": "5",
+          "reward_type": "RewardTypeNormal"
+        },
+        "all_finished": true,
+        "show_text": "",
+        "act_time_type": "ActTimeTypeDefault"
+      }
+    ],
+    "challenge_list": [
+      {
+        "group_id": 1028,
+        "name_mi18n": "원숭이 트릭",
+        "challenge_type": "ChallengeTypeChasm",
+        "total_progress": 36,
+        "current_progress": 36,
+        "status": "challengeStatusFinish",
+        "time_info": {
+          "start_ts": "1765137600",
+          "end_ts": "1768766400",
+          "start_time": "2025-12-08 04:00:00",
+          "end_time": "2026-01-19 04:00:00",
+          "now": "1765895948"
+        },
+        "reward_list": [
+          {
+            "item_id": 1,
+            "name": "성옥",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+            "num": 800,
+            "rarity": "5"
+          },
+          {
+            "item_id": 262,
+            "name": "옥 깃털",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8a26648787bc4baa05f9d32205edb90f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/1817",
+            "num": 600,
+            "rarity": "5"
+          },
+          {
+            "item_id": 213,
+            "name": "여행 가이드",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/506b481e6baeaa10ac2cef9566990816.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/330",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 223,
+            "name": "정제한 에테르",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/4aacdb0ba25631182644ff160caaab94.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/225",
+            "num": 12,
+            "rarity": "4"
+          },
+          {
+            "item_id": 233,
+            "name": "유실된 수정덩이",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3887e95e51550c5a00a0a059e5d6150f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/283",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 261,
+            "name": "빛의 잔재",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/5d1b33c14ac716631cc454486ca74bcb.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/465",
+            "num": 96,
+            "rarity": "4"
+          },
+          {
+            "item_id": 2,
+            "name": "신용 포인트",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/01ab53e6a7cf571739e59bf335a9b2c3.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/181",
+            "num": 360000,
+            "rarity": "3"
+          }
+        ],
+        "special_reward": {
+          "item_id": 1,
+          "name": "성옥",
+          "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+          "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+          "num": 800,
+          "rarity": "5"
+        },
+        "show_text": "已完成",
+        "challenge_peak_rank_icon_type": "ChallengePeakRankIconTypeNone",
+        "challenge_peak_rank_icon": "",
+        "challenge_peak_start_version": ""
+      },
+      {
+        "group_id": 2019,
+        "name_mi18n": "프로그래밍 문법",
+        "challenge_type": "ChallengeTypeStory",
+        "total_progress": 12,
+        "current_progress": 12,
+        "status": "challengeStatusFinish",
+        "time_info": {
+          "start_ts": "1763928000",
+          "end_ts": "1767556800",
+          "start_time": "2025-11-24 04:00:00",
+          "end_time": "2026-01-05 04:00:00",
+          "now": "1765895948"
+        },
+        "reward_list": [
+          {
+            "item_id": 1,
+            "name": "성옥",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+            "num": 800,
+            "rarity": "5"
+          },
+          {
+            "item_id": 262,
+            "name": "옥 깃털",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8a26648787bc4baa05f9d32205edb90f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/1817",
+            "num": 600,
+            "rarity": "5"
+          },
+          {
+            "item_id": 213,
+            "name": "여행 가이드",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/506b481e6baeaa10ac2cef9566990816.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/330",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 223,
+            "name": "정제한 에테르",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/4aacdb0ba25631182644ff160caaab94.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/225",
+            "num": 12,
+            "rarity": "4"
+          },
+          {
+            "item_id": 233,
+            "name": "유실된 수정덩이",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3887e95e51550c5a00a0a059e5d6150f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/283",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 261,
+            "name": "빛의 잔재",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/5d1b33c14ac716631cc454486ca74bcb.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/465",
+            "num": 96,
+            "rarity": "4"
+          },
+          {
+            "item_id": 2,
+            "name": "신용 포인트",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/01ab53e6a7cf571739e59bf335a9b2c3.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/181",
+            "num": 360000,
+            "rarity": "3"
+          }
+        ],
+        "special_reward": {
+          "item_id": 1,
+          "name": "성옥",
+          "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+          "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+          "num": 800,
+          "rarity": "5"
+        },
+        "show_text": "已完成",
+        "challenge_peak_rank_icon_type": "ChallengePeakRankIconTypeNone",
+        "challenge_peak_rank_icon": "",
+        "challenge_peak_start_version": ""
+      },
+      {
+        "group_id": 3013,
+        "name_mi18n": "해충과 선동",
+        "challenge_type": "ChallengeTypeBoss",
+        "total_progress": 12,
+        "current_progress": 12,
+        "status": "challengeStatusFinish",
+        "time_info": {
+          "start_ts": "1762718400",
+          "end_ts": "1766347200",
+          "start_time": "2025-11-10 04:00:00",
+          "end_time": "2025-12-22 04:00:00",
+          "now": "1765895948"
+        },
+        "reward_list": [
+          {
+            "item_id": 1,
+            "name": "성옥",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+            "num": 800,
+            "rarity": "5"
+          },
+          {
+            "item_id": 262,
+            "name": "옥 깃털",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/8a26648787bc4baa05f9d32205edb90f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/1817",
+            "num": 600,
+            "rarity": "5"
+          },
+          {
+            "item_id": 213,
+            "name": "여행 가이드",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/506b481e6baeaa10ac2cef9566990816.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/330",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 223,
+            "name": "정제한 에테르",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/4aacdb0ba25631182644ff160caaab94.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/225",
+            "num": 12,
+            "rarity": "4"
+          },
+          {
+            "item_id": 233,
+            "name": "유실된 수정덩이",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/3887e95e51550c5a00a0a059e5d6150f.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/283",
+            "num": 24,
+            "rarity": "4"
+          },
+          {
+            "item_id": 261,
+            "name": "빛의 잔재",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/5d1b33c14ac716631cc454486ca74bcb.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/465",
+            "num": 96,
+            "rarity": "4"
+          },
+          {
+            "item_id": 2,
+            "name": "신용 포인트",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/01ab53e6a7cf571739e59bf335a9b2c3.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/181",
+            "num": 360000,
+            "rarity": "3"
+          }
+        ],
+        "special_reward": {
+          "item_id": 1,
+          "name": "성옥",
+          "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/499e4590a327a8e43e8861eb15e5dc60.png",
+          "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/211",
+          "num": 800,
+          "rarity": "5"
+        },
+        "show_text": "已完成",
+        "challenge_peak_rank_icon_type": "ChallengePeakRankIconTypeNone",
+        "challenge_peak_rank_icon": "",
+        "challenge_peak_start_version": ""
+      },
+      {
+        "group_id": 2,
+        "name_mi18n": "태양의 환상 영역",
+        "challenge_type": "ChallengeTypePeak",
+        "total_progress": 9,
+        "current_progress": 4,
+        "status": "challengeStatusFinish",
+        "time_info": {
+          "start_ts": "1762297200",
+          "end_ts": "1765922400",
+          "start_time": "2025-11-05 07:00:00",
+          "end_time": "2025-12-17 06:00:00",
+          "now": "1765895948"
+        },
+        "reward_list": [
+          {
+            "item_id": 263,
+            "name": "론스타 더스트",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/fd8bf1bbc731da239ef2529423abb26d.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/4028",
+            "num": 1200,
+            "rarity": "5"
+          },
+          {
+            "item_id": 239,
+            "name": "간섭 암호키",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/955686897e1f4a92c9c0ac2c605dc08c.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/4023",
+            "num": 1,
+            "rarity": "5"
+          },
+          {
+            "item_id": 236,
+            "name": "자가 변형성 레진",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/9e43d99df4ae434a35e7da638799cd60.png",
+            "wiki_url": "https://wiki.hoyolab.com/pc/hsr/entry/616",
+            "num": 3,
+            "rarity": "5"
+          }
+        ],
+        "special_reward": null,
+        "show_text": "已完成",
+        "challenge_peak_rank_icon_type": "ChallengePeakRankIconTypeGold",
+        "challenge_peak_rank_icon": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_u069sd/7ce6010f019c8411442cd1a477e9fb97.png",
+        "challenge_peak_start_version": "3.7"
+      }
+    ],
+    "now": "1765895948",
+    "cur_game_version": "3.7"
+  }
+}
