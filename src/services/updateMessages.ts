@@ -83,8 +83,9 @@ export async function updateAllMessages(client: Client) {
                                 deleteUpdateMessage(msgData.guildId);
                                 deletedCount++;
                                 continue;
+                            } else {
+                                throw error;
                             }
-                            throw error;
                         }
                     } else {
                         throw error;
@@ -93,8 +94,18 @@ export async function updateAllMessages(client: Client) {
 
                 // 메시지 업데이트
                 if (message) {
-                    await message.edit({ embeds: [embed] });
-                    updatedCount++;
+                    try {
+                        await message.edit({ embeds: [embed] });
+                        updatedCount++;
+                    } catch (error: any) {
+                        if (error.code === 50013 || error.code === 50001) {
+                            logError("updateAllMessages", `권한 없음: ${msgData.channelId} - 메시지 수정 실패`, error);
+                            deleteUpdateMessage(msgData.guildId);
+                            deletedCount++;
+                        } else {
+                            throw error;
+                        }
+                    }
                 }
             } catch (error) {
                 logError("updateAllMessages", `메시지 처리 중 오류 (channelId: ${msgData.channelId})`, error);
