@@ -37,19 +37,19 @@ async function getTimeData() {
     const gameversion = calendar.cur_game_version;
 
     let versionUpdate; // 이번 버전업 날짜(간접적)
-    let nextversionUpdate = dayjs().tz("Asia/Seoul").set("hour", 12).set("minute", 0).set("second", 0); // 다음 버전업 날짜(간접적)
+    let nextversionUpdate = dayjs().tz("Asia/Seoul").set("hour", 11).set("minute", 0).set("second", 0); // 다음 버전업 날짜(간접적)
     let nextnextversionUpdate = null; // 다다음 버전업 날짜(간접적)
     const challenges: Record<string, { startTime: ReturnType<typeof dayjs>; endTime: ReturnType<typeof dayjs> }> = {};
     for (const event of calendar.challenge_list) {
         if (event.challenge_type == "ChallengeTypePeak") {
             versionUpdate = dayjs(event.time_info.start_ts * 1000)
                 .tz("Asia/Seoul")
-                .set("hour", 12)
+                .set("hour", 11)
                 .set("minute", 0)
                 .set("second", 0);
             nextversionUpdate = dayjs(event.time_info.end_ts * 1000)
                 .tz("Asia/Seoul")
-                .set("hour", 12)
+                .set("hour", 11)
                 .set("minute", 0)
                 .set("second", 0);
         }
@@ -110,7 +110,7 @@ async function getTimeData() {
     if (warpTime.length > 0 && warpTime[warpTime.length - 1].gameversion != gameversion) {
         const calculatedNextNextVersion = warpTime[warpTime.length - 1].endTime
             .add(1, "d")
-            .set("hour", 12)
+            .set("hour", 11)
             .set("minute", 0)
             .set("second", 0);
 
@@ -179,8 +179,8 @@ async function getTimeData() {
             storyEndTime: challenges["ChallengeTypeStory"].endTime,
             chaosEndTime: challenges["ChallengeTypeChasm"].endTime,
             peakEndTime: challenges["ChallengeTypePeak"]
-                ? challenges["ChallengeTypePeak"].endTime.tz("Asia/Seoul").set("hour", 12)
-                : dayjs().tz("Asia/Seoul").set("hour", 12).set("minute", 0).set("second", 0),
+                ? challenges["ChallengeTypePeak"].endTime.tz("Asia/Seoul")
+                : null,
             currencyWarUpdateTime: battleUpdateTime["currencyWar"],
             simulationUpdateTime: battleUpdateTime["simulation"],
             dailyResetTime: dailyResetTime,
@@ -207,7 +207,9 @@ function formatTime(timedata: Awaited<ReturnType<typeof getTimeData>>): string {
                   .map((warp: any) => `- ${warp.characters.join(", ")} 픽업 종료: <t:${warp.endTime.unix()}:R>`)
                   .join("\n")
             : "- 현재 진행중인 워프가 없습니다."
-    }\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 업데이트: <t:${data.peakEndTime.unix()}:R>\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
+    }\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 종료: ${
+        data.peakEndTime ? `<t:${data.peakEndTime.unix()}:R>` : "종료됨"
+    }\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
         data.gameversion
     }\n-# last updated at <t:${dayjs().unix()}:s>`;
 }

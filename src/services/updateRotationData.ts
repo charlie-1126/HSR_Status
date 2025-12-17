@@ -46,7 +46,7 @@ export async function updateRotationData(client?: Client) {
             bossEndTime: timedata.data.bossEndTime.unix(),
             storyEndTime: timedata.data.storyEndTime.unix(),
             chaosEndTime: timedata.data.chaosEndTime.unix(),
-            peakEndTime: timedata.data.peakEndTime.unix(),
+            peakEndTime: timedata.data.peakEndTime ? timedata.data.peakEndTime.unix() : null,
             currencyWarUpdateTime: timedata.data.currencyWarUpdateTime.unix(),
             simulationUpdateTime: timedata.data.simulationUpdateTime.unix(),
             dailyResetTime: timedata.data.dailyResetTime.unix(),
