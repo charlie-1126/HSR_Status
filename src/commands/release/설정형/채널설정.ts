@@ -80,8 +80,15 @@ export default {
                 setupdateMessage(interaction.guild.id, channelId, message.id);
             } catch (error: any) {
                 if (error.code === 50013 || error.code === 50001) {
+                    const errorEmbed = new EmbedBuilder()
+                        .setColor("Red")
+                        .setTitle("❌ 필수 권한 누락")
+                        .setDescription(
+                            `봇이 <#${channelId}> 채널에 메시지를 보낼 권한이 없습니다.\n\n**필수 권한:**\n- 채널 보기\n- 메시지 보내기\n- 링크 첨부\n\n**해결 방법:**\n채널 설정 → 권한 → 봇 역할에 위 권한을 허용해주세요.`
+                        );
+
                     await interaction.reply({
-                        content: `❌ 봇이 <#${channelId}> 채널에 메시지를 보낼 권한이 없습니다.\n\n**필요한 권한:**\n• 채널 보기\n• 메시지 보내기\n• 링크 첨부\n\n**해결 방법:**\n채널 설정 → 권한 → 봇 역할에 위 권한을 허용해주세요.`,
+                        embeds: [errorEmbed],
                         flags: MessageFlags.Ephemeral,
                     });
                     return;
