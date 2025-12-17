@@ -19,7 +19,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 export default {
     data: new SlashCommandBuilder()
         .setName("setoffset")
-        .setDescription("HSR 로테이션을 일시적으로 변경합니다.(관리자 전용)")
+        .setDescription("HSR 로테이션을 일시적으로 변경합니다.(개발자 전용)")
         .addStringOption((option) =>
             option
                 .setName("item")
@@ -42,7 +42,7 @@ export default {
         const dateString = interaction.options.getString("date", true);
         if (interaction.user.id != process.env.DEVELOPER_ID) {
             await interaction.reply({
-                content: "이 명령어는 관리자 전용 명령어입니다.",
+                content: "이 명령어는 개발자 전용 명령어입니다.",
                 flags: MessageFlags.Ephemeral,
             });
             return;

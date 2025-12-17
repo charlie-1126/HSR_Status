@@ -3,7 +3,6 @@ import {
     ChatInputCommandInteraction,
     MessageFlags,
     EmbedBuilder,
-    ChannelType,
     PermissionFlagsBits,
 } from "discord.js";
 import { getTimeData, formatTime } from "../../../utils/getTimeData";
@@ -65,9 +64,20 @@ export default {
         const isSending = updateMessage ? updateMessage.channelId != channelId : true;
 
         if (isSending) {
-            const embed = new EmbedBuilder().setColor("White").setDescription(formatTime(timedata));
-            const message = await channel.send({ embeds: [embed] });
-            setupdateMessage(interaction.guild.id, channelId, message.id);
+            try {
+                const embed = new EmbedBuilder().setColor("White").setDescription(formatTime(timedata));
+                const message = await channel.send({ embeds: [embed] });
+                setupdateMessage(interaction.guild.id, channelId, message.id);
+            } catch (error: any) {
+                if (error.code === 50013 || error.code === 50001) {
+                    await interaction.reply({
+                        content: `❌ 봇이 <#${channelId}> 채널에 메시지를 보낼 권한이 없습니다.\n\n**필요한 권한:**\n• 채널 보기\n• 메시지 보내기\n• 링크 첨부\n\n**해결 방법:**\n채널 설정 → 권한 → 봇 역할에 위 권한을 허용해주세요.`,
+                        flags: MessageFlags.Ephemeral,
+                    });
+                    return;
+                }
+                throw error;
+            }
         }
         const successEmbed = new EmbedBuilder()
             .setColor("Green")

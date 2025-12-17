@@ -19,11 +19,11 @@ dayjs.tz.setDefault("Asia/Seoul");
 export default {
     data: new SlashCommandBuilder()
         .setName("resetoffset")
-        .setDescription("HSR 로테이션을 기본값으로 재설정합니다. (관리자 전용)"),
+        .setDescription("HSR 로테이션을 기본값으로 재설정합니다. (개발자 전용)"),
     async execute(interaction: ChatInputCommandInteraction) {
         if (interaction.user.id != process.env.DEVELOPER_ID) {
             await interaction.reply({
-                content: "이 명령어는 관리자 전용 명령어입니다.",
+                content: "이 명령어는 개발자 전용 명령어입니다.",
                 flags: MessageFlags.Ephemeral,
             });
             return;
