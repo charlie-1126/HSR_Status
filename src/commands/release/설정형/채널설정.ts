@@ -61,7 +61,17 @@ export default {
 
         // 설정 저장
         const updateMessage = getUpdateMessage(interaction.guild.id);
-        const isSending = updateMessage ? updateMessage.channelId != channelId : true;
+        let isSending = updateMessage ? updateMessage.channelId != channelId : true;
+
+        // 채널이 같더라도 메시지가 삭제되었는지 확인
+        if (!isSending && updateMessage) {
+            try {
+                await channel.messages.fetch(updateMessage.MessageId);
+            } catch (error) {
+                // 메시지를 찾을 수 없으면 새로 보내야 함
+                isSending = true;
+            }
+        }
 
         if (isSending) {
             try {

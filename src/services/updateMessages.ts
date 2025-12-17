@@ -62,16 +62,30 @@ export async function updateAllMessages(client: Client) {
                 } catch (error: any) {
                     // 메시지가 삭제된 경우
                     if (error.code === 10008) {
-                        // Unknown Message
-                        logToFile("updateAllMessages", `메시지가 삭제됨: ${msgData.MessageId} - 새 메시지 생성`);
+                        try {
+                            // Unknown Message
+                            logToFile("updateAllMessages", `메시지가 삭제됨: ${msgData.MessageId} - 새 메시지 생성`);
 
-                        // 새 메시지 생성
-                        const newMessage = await channel.send({ embeds: [embed] });
+                            // 새 메시지 생성
+                            const newMessage = await channel.send({ embeds: [embed] });
 
-                        // DB 업데이트
-                        setupdateMessage(msgData.guildId, msgData.channelId, newMessage.id);
-                        recreatedCount++;
-                        continue;
+                            // DB 업데이트
+                            setupdateMessage(msgData.guildId, msgData.channelId, newMessage.id);
+                            recreatedCount++;
+                            continue;
+                        } catch (error: any) {
+                            if (error.code === 50013 || error.code === 50001) {
+                                logError(
+                                    "updateAllMessages",
+                                    `권한 없음: ${msgData.channelId} - 메시지 생성 실패`,
+                                    error
+                                );
+                                deleteUpdateMessage(msgData.guildId);
+                                deletedCount++;
+                                continue;
+                            }
+                            throw error;
+                        }
                     } else {
                         throw error;
                     }
