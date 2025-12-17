@@ -4,8 +4,10 @@ import { getOffset, setOffset } from "../services/getOffset";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrAfter);
 dayjs.tz.setDefault("Asia/Seoul");
 
 async function getTimeData() {
@@ -115,7 +117,7 @@ async function getTimeData() {
             .set("second", 0);
 
         // 오프셋이 없을 때만 계산된 값 사용
-        if (!offsetData.nextnextversionUpdate || now.isAfter(dayjs(offsetData.nextnextversionUpdate))) {
+        if (!offsetData.nextnextversionUpdate || now.isSameOrAfter(dayjs(offsetData.nextnextversionUpdate))) {
             nextnextversionUpdate = calculatedNextNextVersion;
         }
     }
@@ -135,7 +137,7 @@ async function getTimeData() {
         passEndTime = nextversionUpdate.subtract(2, "d").set("hour", 4).set("minute", 59).set("second", 59);
     }
 
-    if (now.isAfter(passEndTime)) {
+    if (now.isSameOrAfter(passEndTime)) {
         passEndTime = null;
     }
 
@@ -154,13 +156,13 @@ async function getTimeData() {
         previewProgramTime = nextversionUpdate.subtract(12, "d").set("hour", 20).set("minute", 30).set("second", 0);
     }
 
-    if (now.isAfter(previewProgramTime) && nextnextversionUpdate != null) {
+    if (now.isSameOrAfter(previewProgramTime) && nextnextversionUpdate != null) {
         previewProgramTime = nextnextversionUpdate.subtract(12, "d").set("hour", 20).set("minute", 30).set("second", 0);
     }
 
     // 리셋 시간(고정적)
     let dailyResetTime = dayjs().tz("Asia/Seoul").set("hour", 5).set("minute", 0).set("second", 0);
-    if (dayjs().isAfter(dailyResetTime)) {
+    if (dayjs().isSameOrAfter(dailyResetTime)) {
         dailyResetTime = dailyResetTime.add(1, "d");
     }
     const weeklyResetTime = dailyResetTime.set("date", dailyResetTime.date() + ((7 - dailyResetTime.day() + 1) % 7));
@@ -173,7 +175,7 @@ async function getTimeData() {
             previewProgramTime: previewProgramTime,
             passEndTime: passEndTime,
             warpTime: warpTime.filter((i) => {
-                return now.isAfter(i.startTime);
+                return now.isSameOrAfter(i.startTime);
             }),
             bossEndTime: challenges["ChallengeTypeBoss"].endTime,
             storyEndTime: challenges["ChallengeTypeStory"].endTime,

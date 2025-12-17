@@ -6,10 +6,12 @@ import { Client } from "discord.js";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { logToFile, logError } from "../utils/logger";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrAfter);
 dayjs.tz.setDefault("Asia/Seoul");
 
 // 이전 데이터를 저장하기 위한 변수 (JSON 형식으로 저장)
@@ -81,31 +83,31 @@ export async function updateRotationData(client?: Client) {
         let offsetExpired = false;
 
         // versionUpdate 체크
-        if (offsetData.versionUpdate && now.isAfter(dayjs(offsetData.versionUpdate))) {
+        if (offsetData.versionUpdate && now.isSameOrAfter(dayjs(offsetData.versionUpdate))) {
             setOffset("versionUpdate", null);
             offsetExpired = true;
         }
 
         // nextversionUpdate 체크
-        if (offsetData.nextversionUpdate && now.isAfter(dayjs(offsetData.nextversionUpdate))) {
+        if (offsetData.nextversionUpdate && now.isSameOrAfter(dayjs(offsetData.nextversionUpdate))) {
             setOffset("nextversionUpdate", null);
             offsetExpired = true;
         }
 
         // nextnextversionUpdate 체크
-        if (offsetData.nextnextversionUpdate && now.isAfter(dayjs(offsetData.nextnextversionUpdate))) {
+        if (offsetData.nextnextversionUpdate && now.isSameOrAfter(dayjs(offsetData.nextnextversionUpdate))) {
             setOffset("nextnextversionUpdate", null);
             offsetExpired = true;
         }
 
         // passEndTime 체크
-        if (offsetData.passEndTime && now.isAfter(dayjs(offsetData.passEndTime))) {
+        if (offsetData.passEndTime && now.isSameOrAfter(dayjs(offsetData.passEndTime))) {
             setOffset("passEndTime", null);
             offsetExpired = true;
         }
 
         // previewProgramTime 체크
-        if (offsetData.previewProgramTime && now.isAfter(dayjs(offsetData.previewProgramTime))) {
+        if (offsetData.previewProgramTime && now.isSameOrAfter(dayjs(offsetData.previewProgramTime))) {
             setOffset("previewProgramTime", null);
             offsetExpired = true;
         }
