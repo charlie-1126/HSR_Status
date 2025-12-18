@@ -141,7 +141,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 // 봇 로그인
-client.login(process.env.TOKEN).catch((error) => {
+const token = process.env.NODE_ENV === "development" ? process.env.TESTBOT_TOKEN : process.env.TOKEN;
+client.login(token).catch((error) => {
     console.error("봇 로그인 오류:", error);
     process.exit(1);
 });

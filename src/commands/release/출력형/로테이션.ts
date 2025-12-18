@@ -21,7 +21,13 @@ export default {
         }
 
         // 출력
-        const embed = new EmbedBuilder().setColor("White").setDescription(formatTime(timedata));
+        const embed = new EmbedBuilder()
+            .setColor("White")
+            .setDescription(formatTime(timedata))
+            .setTimestamp()
+            .setFooter({
+                text: `version ${typeof timedata.data === "string" ? timedata.data : timedata.data.gameversion}`,
+            });
 
         await interaction.reply({ embeds: [embed] });
     },

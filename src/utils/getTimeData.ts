@@ -211,9 +211,7 @@ function formatTime(timedata: Awaited<ReturnType<typeof getTimeData>>): string {
             : "- 현재 진행중인 워프가 없습니다."
     }\n\n## 빛 따라 금 찾아\n- 종말의 환영 업데이트: <t:${data.bossEndTime.unix()}:R>\n- 허구 이야기 업데이트: <t:${data.storyEndTime.unix()}:R>\n- 혼돈의 기억 업데이트: <t:${data.chaosEndTime.unix()}:R>\n- 이상 중재 종료: ${
         data.peakEndTime ? `<t:${data.peakEndTime.unix()}:R>` : "종료됨"
-    }\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>\n\n-# version ${
-        data.gameversion
-    }\n-# last updated at <t:${dayjs().unix()}:s>`;
+    }\n\n## 우주 분쟁\n- 화폐 전쟁 업데이트: <t:${data.currencyWarUpdateTime.unix()}:R>\n- 차분화 우주 업데이트: <t:${data.simulationUpdateTime.unix()}:R>\n\n## 리셋\n- 일일 리셋: <t:${data.dailyResetTime.unix()}:R>\n- 주간 리셋: <t:${data.weeklyResetTime.unix()}:R>`;
 }
 
 export { getTimeData, formatTime };

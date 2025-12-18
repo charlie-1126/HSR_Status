@@ -75,7 +75,15 @@ export default {
 
         if (isSending) {
             try {
-                const embed = new EmbedBuilder().setColor("White").setDescription(formatTime(timedata));
+                const embed = new EmbedBuilder()
+                    .setColor("White")
+                    .setDescription(formatTime(timedata))
+                    .setTimestamp()
+                    .setFooter({
+                        text: `version ${
+                            typeof timedata.data === "string" ? timedata.data : timedata.data.gameversion
+                        }`,
+                    });
                 const message = await channel.send({ embeds: [embed] });
                 setupdateMessage(interaction.guild.id, channelId, message.id);
             } catch (error: any) {

@@ -28,7 +28,13 @@ export async function updateAllMessages(client: Client) {
             return;
         }
 
-        const embed = new EmbedBuilder().setColor("White").setDescription(formatTime(timedata));
+        const embed = new EmbedBuilder()
+            .setColor("White")
+            .setDescription(formatTime(timedata))
+            .setTimestamp()
+            .setFooter({
+                text: `version ${typeof timedata.data === "string" ? timedata.data : timedata.data.gameversion}`,
+            });
 
         let updatedCount = 0;
         let recreatedCount = 0;

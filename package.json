@@ -4,7 +4,7 @@
     "main": "index.js",
     "scripts": {
         "start": "node dist/index.js",
-        "dev": "nodemon --exec ts-node src/index.ts",
+        "dev": "set NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
         "build": "tsc",
         "deploy": "ts-node src/deploy-commands.ts",
         "bstart": "npm run build && npm run start"
