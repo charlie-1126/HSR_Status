@@ -5,9 +5,11 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 dayjs.tz.setDefault("Asia/Seoul");
 
 async function getTimeData() {
@@ -26,12 +28,12 @@ async function getTimeData() {
     const battleUpdateTime: Record<string, ReturnType<typeof dayjs>> = {};
 
     battleUpdateTime["currencyWar"] = start.add(cycle * 14, "day");
-    if (battleUpdateTime["currencyWar"].isBefore(now)) {
+    if (battleUpdateTime["currencyWar"].isSameOrBefore(now)) {
         battleUpdateTime["currencyWar"] = battleUpdateTime["currencyWar"].add(14, "day");
     }
 
     battleUpdateTime["simulation"] = start.add(cycle * 14 + 7, "day");
-    if (battleUpdateTime["simulation"].isBefore(now)) {
+    if (battleUpdateTime["simulation"].isSameOrBefore(now)) {
         battleUpdateTime["simulation"] = battleUpdateTime["simulation"].add(14, "day");
     }
 
