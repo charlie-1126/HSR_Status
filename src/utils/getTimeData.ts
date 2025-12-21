@@ -21,7 +21,7 @@ async function getTimeData() {
     const offsetData = getOffset();
 
     // 전투 로테이션 정보(간접적)
-    const now = dayjs();
+    const now = dayjs().tz("Asia/Seoul");
     const start = dayjs.tz(offsetData.battleStart, "Asia/Seoul");
     const diffDays = now.diff(start, "day", true);
     const cycle = Math.floor(diffDays / 14);
@@ -67,7 +67,7 @@ async function getTimeData() {
 
     // 오프셋 우선 사용 (만료 확인 및 처리)
     if (offsetData.versionUpdate) {
-        const offsetVersionUpdate = dayjs(offsetData.versionUpdate);
+        const offsetVersionUpdate = dayjs.tz(offsetData.versionUpdate, "Asia/Seoul");
         if (now.isBefore(offsetVersionUpdate)) {
             versionUpdate = offsetVersionUpdate;
         } else {
@@ -76,7 +76,7 @@ async function getTimeData() {
     }
 
     if (offsetData.nextversionUpdate) {
-        const offsetNextVersionUpdate = dayjs(offsetData.nextversionUpdate);
+        const offsetNextVersionUpdate = dayjs.tz(offsetData.nextversionUpdate, "Asia/Seoul");
         if (now.isBefore(offsetNextVersionUpdate)) {
             nextversionUpdate = offsetNextVersionUpdate;
         } else {
@@ -85,7 +85,7 @@ async function getTimeData() {
     }
 
     if (offsetData.nextnextversionUpdate) {
-        const offsetNextNextVersionUpdate = dayjs(offsetData.nextnextversionUpdate);
+        const offsetNextNextVersionUpdate = dayjs.tz(offsetData.nextnextversionUpdate, "Asia/Seoul");
         if (now.isBefore(offsetNextNextVersionUpdate)) {
             nextnextversionUpdate = offsetNextNextVersionUpdate;
         } else {
@@ -119,7 +119,10 @@ async function getTimeData() {
             .set("second", 0);
 
         // 오프셋이 없을 때만 계산된 값 사용
-        if (!offsetData.nextnextversionUpdate || now.isSameOrAfter(dayjs(offsetData.nextnextversionUpdate))) {
+        if (
+            !offsetData.nextnextversionUpdate ||
+            now.isSameOrAfter(dayjs.tz(offsetData.nextnextversionUpdate, "Asia/Seoul"))
+        ) {
             nextnextversionUpdate = calculatedNextNextVersion;
         }
     }
@@ -128,7 +131,7 @@ async function getTimeData() {
     let passEndTime: ReturnType<typeof dayjs> | null = null;
 
     if (offsetData.passEndTime) {
-        const offsetPassEndTime = dayjs(offsetData.passEndTime);
+        const offsetPassEndTime = dayjs.tz(offsetData.passEndTime, "Asia/Seoul");
         if (now.isBefore(offsetPassEndTime)) {
             passEndTime = offsetPassEndTime;
         } else {
@@ -147,7 +150,7 @@ async function getTimeData() {
     let previewProgramTime: ReturnType<typeof dayjs>;
 
     if (offsetData.previewProgramTime) {
-        const offsetPreviewProgramTime = dayjs(offsetData.previewProgramTime);
+        const offsetPreviewProgramTime = dayjs.tz(offsetData.previewProgramTime, "Asia/Seoul");
         if (now.isBefore(offsetPreviewProgramTime)) {
             previewProgramTime = offsetPreviewProgramTime;
         } else {
@@ -164,7 +167,7 @@ async function getTimeData() {
 
     // 리셋 시간(고정적)
     let dailyResetTime = dayjs().tz("Asia/Seoul").set("hour", 5).set("minute", 0).set("second", 0);
-    if (dayjs().isSameOrAfter(dailyResetTime)) {
+    if (now.isSameOrAfter(dailyResetTime)) {
         dailyResetTime = dailyResetTime.add(1, "d");
     }
     const weeklyResetTime = dailyResetTime.set("date", dailyResetTime.date() + ((7 - dailyResetTime.day() + 1) % 7));

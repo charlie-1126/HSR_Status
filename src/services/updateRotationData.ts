@@ -77,37 +77,40 @@ export async function updateRotationData(client?: Client) {
         }
 
         const offsetData = getOffset();
-        const now = dayjs();
+        const now = dayjs().tz("Asia/Seoul");
 
         // 버전 업데이트 날짜 확인 및 오프셋 만료 처리
         let offsetExpired = false;
 
         // versionUpdate 체크
-        if (offsetData.versionUpdate && now.isSameOrAfter(dayjs(offsetData.versionUpdate))) {
+        if (offsetData.versionUpdate && now.isSameOrAfter(dayjs.tz(offsetData.versionUpdate, "Asia/Seoul"))) {
             setOffset("versionUpdate", null);
             offsetExpired = true;
         }
 
         // nextversionUpdate 체크
-        if (offsetData.nextversionUpdate && now.isSameOrAfter(dayjs(offsetData.nextversionUpdate))) {
+        if (offsetData.nextversionUpdate && now.isSameOrAfter(dayjs.tz(offsetData.nextversionUpdate, "Asia/Seoul"))) {
             setOffset("nextversionUpdate", null);
             offsetExpired = true;
         }
 
         // nextnextversionUpdate 체크
-        if (offsetData.nextnextversionUpdate && now.isSameOrAfter(dayjs(offsetData.nextnextversionUpdate))) {
+        if (
+            offsetData.nextnextversionUpdate &&
+            now.isSameOrAfter(dayjs.tz(offsetData.nextnextversionUpdate, "Asia/Seoul"))
+        ) {
             setOffset("nextnextversionUpdate", null);
             offsetExpired = true;
         }
 
         // passEndTime 체크
-        if (offsetData.passEndTime && now.isSameOrAfter(dayjs(offsetData.passEndTime))) {
+        if (offsetData.passEndTime && now.isSameOrAfter(dayjs.tz(offsetData.passEndTime, "Asia/Seoul"))) {
             setOffset("passEndTime", null);
             offsetExpired = true;
         }
 
         // previewProgramTime 체크
-        if (offsetData.previewProgramTime && now.isSameOrAfter(dayjs(offsetData.previewProgramTime))) {
+        if (offsetData.previewProgramTime && now.isSameOrAfter(dayjs.tz(offsetData.previewProgramTime, "Asia/Seoul"))) {
             setOffset("previewProgramTime", null);
             offsetExpired = true;
         }

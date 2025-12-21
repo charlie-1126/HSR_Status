@@ -45,7 +45,7 @@ function checkLogFileSize() {
 export function logToFile(tag: string, message: string) {
     checkLogFileSize();
 
-    const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const timestamp = dayjs().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
     const logMessage = `[${timestamp}] [${tag}] ${message}\n`;
 
     fs.appendFileSync(logFilePath, logMessage, "utf-8");
@@ -60,7 +60,7 @@ export function logToFile(tag: string, message: string) {
 export function logError(tag: string, message: string, error?: any) {
     checkLogFileSize();
 
-    const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const timestamp = dayjs().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
     let logMessage = `[${timestamp}] [${tag}] ERROR: ${message}`;
 
     if (error) {

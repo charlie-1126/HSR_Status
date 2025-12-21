@@ -49,7 +49,7 @@ export default {
         }
 
         // 날짜 유효성 검증
-        const parsedDate = dayjs(dateString);
+        const parsedDate = dayjs.tz(dateString, "Asia/Seoul");
         if (!parsedDate.isValid()) {
             await interaction.reply({
                 content: "올바른 날짜 형식이 아닙니다. (예: 2025-12-05 05:00)",

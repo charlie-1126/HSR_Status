@@ -12,27 +12,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-const serverOffset = dayjs().utcOffset();
-const kstOffset = dayjs().tz("Asia/Seoul").utcOffset();
-const offsetDiff = kstOffset - serverOffset;
-
-function getServerTimeCron(kstHour: number, kstMinute: number) {
-    let serverOffsetHours = Math.floor(offsetDiff / 60);
-    let serverOffsetMinutes = offsetDiff % 60;
-
-    let serverHour = kstHour - serverOffsetHours;
-    let serverMinute = kstMinute - serverOffsetMinutes;
-
-    if (serverMinute < 0) {
-        serverMinute += 60;
-        serverHour -= 1;
-    }
-    if (serverHour < 0) serverHour += 24;
-    if (serverHour >= 24) serverHour -= 24;
-
-    return `0 ${serverMinute} ${serverHour} * * *`;
-}
-
 export async function startScheduler(client: Client) {
     // 1시간마다 로테이션 데이터 업데이트 (오프셋 만료 확인)
     schedule.scheduleJob("0 * * * *", async () => {
