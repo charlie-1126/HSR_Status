@@ -41,7 +41,12 @@ async function getTimeData() {
     const gameversion = calendar.cur_game_version;
 
     let versionUpdate; // 이번 버전업 날짜(간접적)
-    let nextversionUpdate = dayjs().tz("Asia/Seoul").set("hour", 11).set("minute", 0).set("second", 0); // 다음 버전업 날짜(간접적)
+    let nextversionUpdate = dayjs()
+        .tz("Asia/Seoul")
+        .set("hour", 11)
+        .set("minute", 0)
+        .set("second", 0)
+        .set("millisecond", 0); // 다음 버전업 날짜(간접적)
     let nextnextversionUpdate = null; // 다다음 버전업 날짜(간접적)
     const challenges: Record<string, { startTime: ReturnType<typeof dayjs>; endTime: ReturnType<typeof dayjs> }> = {};
     for (const event of calendar.challenge_list) {
@@ -50,12 +55,14 @@ async function getTimeData() {
                 .tz("Asia/Seoul")
                 .set("hour", 11)
                 .set("minute", 0)
-                .set("second", 0);
+                .set("second", 0)
+                .set("millisecond", 0);
             nextversionUpdate = dayjs(event.time_info.end_ts * 1000)
                 .tz("Asia/Seoul")
                 .set("hour", 11)
                 .set("minute", 0)
-                .set("second", 0);
+                .set("second", 0)
+                .set("millisecond", 0);
         }
         if (event.status != "challengeStatusUnopened") {
             challenges[event.challenge_type] = {
@@ -116,7 +123,8 @@ async function getTimeData() {
             .add(1, "d")
             .set("hour", 11)
             .set("minute", 0)
-            .set("second", 0);
+            .set("second", 0)
+            .set("millisecond", 0);
 
         // 오프셋이 없을 때만 계산된 값 사용
         if (
