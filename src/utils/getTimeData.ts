@@ -166,7 +166,12 @@ async function getTimeData() {
     }
 
     // 리셋 시간(고정적)
-    let dailyResetTime = dayjs().tz("Asia/Seoul").set("hour", 5).set("minute", 0).set("second", 0);
+    let dailyResetTime = dayjs()
+        .tz("Asia/Seoul")
+        .set("hour", 5)
+        .set("minute", 0)
+        .set("second", 0)
+        .set("millisecond", 0);
     if (now.isSameOrAfter(dailyResetTime)) {
         dailyResetTime = dailyResetTime.add(1, "d");
     }
