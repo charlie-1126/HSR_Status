@@ -1,12 +1,6 @@
 import axios from "axios";
 import crypto from "crypto";
-import dotenv from "dotenv";
-import fs from "fs";
-dotenv.config();
-
-const ltuid_v2 = process.env.LTUID_V2;
-const ltoken_v2 = process.env.LTOKEN_V2;
-const uid = process.env.UID;
+import { getUserData } from "../../services/dbHandler";
 
 const DS_SALT = "6s25p5ox5y14umn1p61aqyyvbvvl3lrt";
 
@@ -34,16 +28,20 @@ function generateDS() {
     return `${time},${random},${hash}`;
 }
 
-async function fetchActCalendar() {
-    const url = "https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/get_act_calender";
+export async function isExistUser(userId: string) {
+    const userData = getUserData(userId);
+    if (userData) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-    const params = {
-        server: "prod_official_asia",
-        role_id: uid,
-    };
+export async function checkAPI(uid: string, ltuid: string, ltoken: string) {
+    const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/note?server=prod_official_asia&role_id=${uid}`;
 
     const headers = {
-        Cookie: `ltuid_v2=${ltuid_v2}; ltoken_v2=${ltoken_v2}`,
+        Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
         DS: generateDS(),
         "x-rpc-app_version": "1.5.0",
         "x-rpc-client_type": "5",
@@ -52,15 +50,16 @@ async function fetchActCalendar() {
 
     try {
         const response = await axios.get(url, {
-            params,
             headers,
         });
 
-        return response.data;
+        if (response.data && response.data.retcode === 0) {
+            return true;
+        } else {
+            return false;
+        }
     } catch (err: any) {
         console.error("API 요청 오류:", err.response?.data || err);
+        return false;
     }
 }
-
-fetchActCalendar();
-export { fetchActCalendar };

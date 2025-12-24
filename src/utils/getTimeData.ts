@@ -1,5 +1,5 @@
-import { fetchActCalendar } from "./fetchEvent";
-import { getOffset, setOffset } from "../services/getOffset";
+import { fetchActCalendar } from "./fetchHoyolab";
+import { getOffset, setOffset } from "./getOffset";
 
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
@@ -11,6 +11,28 @@ dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 dayjs.tz.setDefault("Asia/Seoul");
+
+interface TimeData {
+    gameversion: string;
+    versionUpdate: ReturnType<typeof dayjs>;
+    previewProgramTime: ReturnType<typeof dayjs>;
+    passEndTime: ReturnType<typeof dayjs> | null;
+    warpTime: {
+        id: number;
+        gameversion: string;
+        startTime: ReturnType<typeof dayjs>;
+        endTime: ReturnType<typeof dayjs>;
+        characters: string[];
+    }[];
+    bossEndTime: ReturnType<typeof dayjs>;
+    storyEndTime: ReturnType<typeof dayjs>;
+    chaosEndTime: ReturnType<typeof dayjs>;
+    peakEndTime: ReturnType<typeof dayjs> | null;
+    currencyWarUpdateTime: ReturnType<typeof dayjs>;
+    simulationUpdateTime: ReturnType<typeof dayjs>;
+    dailyResetTime: ReturnType<typeof dayjs>;
+    weeklyResetTime: ReturnType<typeof dayjs>;
+}
 
 async function getTimeData() {
     const response = await fetchActCalendar();
@@ -205,7 +227,7 @@ async function getTimeData() {
             simulationUpdateTime: battleUpdateTime["simulation"],
             dailyResetTime: dailyResetTime,
             weeklyResetTime: weeklyResetTime,
-        },
+        } as TimeData,
     };
 }
 

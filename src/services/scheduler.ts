@@ -6,7 +6,7 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import { updateRotationData } from "./updateRotationData";
 import { updateAllMessages } from "./updateMessages";
-import { logToFile } from "../utils/logger";
+import { logToFile } from "../utils/tools/logger";
 import dotenv from "dotenv";
 
 dotenv.config();

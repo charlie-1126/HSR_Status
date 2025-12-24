@@ -27,20 +27,18 @@ interface Command {
     execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
-//명령어 배포 (개발 모드가 아닐 때만)
-if (process.env.NODE_ENV !== "development") {
-    deployCommands()
-        .then((success) => {
-            if (success) {
-                console.log("명령어 배포 완료!");
-            } else {
-                console.error("명령어 배포 실패!");
-            }
-        })
-        .catch((error) => {
-            console.error("명령어 배포 중 오류 발생:", error);
-        });
-}
+//명령어 배포
+deployCommands()
+    .then((success) => {
+        if (success) {
+            console.log("명령어 배포 완료!");
+        } else {
+            console.error("명령어 배포 실패!");
+        }
+    })
+    .catch((error) => {
+        console.error("명령어 배포 중 오류 발생:", error);
+    });
 
 // 명령어를 저장할 컬렉션
 const commands = new Collection<string, Command>();

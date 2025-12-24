@@ -1,5 +1,5 @@
-import { fetchActCalendar } from "../utils/fetchEvent";
-import { getOffset, setOffset } from "./getOffset";
+import { fetchActCalendar } from "../utils/fetchHoyolab";
+import { getOffset, setOffset } from "../utils/getOffset";
 import { updateAllMessages } from "./updateMessages";
 import { getTimeData, formatTime } from "../utils/getTimeData";
 import { Client } from "discord.js";
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import { logToFile, logError } from "../utils/logger";
+import { logToFile, logError } from "../utils/tools/logger";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

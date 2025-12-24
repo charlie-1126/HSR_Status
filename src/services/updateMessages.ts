@@ -4,7 +4,7 @@ import { getTimeData, formatTime } from "../utils/getTimeData";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { logToFile, logError } from "../utils/logger";
+import { logToFile, logError } from "../utils/tools/logger";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

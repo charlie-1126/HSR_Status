@@ -5,9 +5,9 @@ import {
     MessageFlags,
     EmbedBuilder,
 } from "discord.js";
-import { setOffset } from "../../services/getOffset";
+import { setOffset } from "../../utils/getOffset";
 import { updateAllMessages } from "../../services/updateMessages";
-import { logToFile } from "../../utils/logger";
+import { logToFile } from "../../utils/tools/logger";
 
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
