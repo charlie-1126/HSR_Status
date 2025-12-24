@@ -4,6 +4,7 @@ import {
     MessageFlags,
     EmbedBuilder,
     PermissionFlagsBits,
+    InteractionContextType,
 } from "discord.js";
 import { getTimeData, formatTime } from "../../../utils/getTimeData";
 import { getUpdateMessage, setupdateMessage } from "../../../services/dbHandler";
@@ -22,7 +23,8 @@ export default {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addChannelOption((option) =>
             option.setName("채널").setDescription("로테이션 공지를 보낼 채널을 선택하세요.").setRequired(true)
-        ),
+        )
+        .setContexts(InteractionContextType.Guild),
     async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.guild) {
             await interaction.reply({

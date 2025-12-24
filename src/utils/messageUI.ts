@@ -140,47 +140,53 @@ export function playRecordEmbed(gameRecord: any) {
     return embed;
 }
 
-export async function chestDetailEmbed(chestDetail: ChestDetail, page: number, subjectId: string, cid: string) {
-    const itemsPerPage = 1;
-    const totalPages = Math.ceil(chestDetail.chests.length / itemsPerPage);
-    const startIndex = page * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const chestsToShow = chestDetail.chests.slice(startIndex, endIndex);
+export async function chestDetailEmbed(
+    chestDetail: ChestDetail,
+    selectedIndex: number,
+    subjectId: string,
+    cid: string
+) {
+    const chest = chestDetail.chests[selectedIndex];
 
-    const embed = new EmbedBuilder()
-        .setColor("White")
-        .setTitle(`전리품 상세 정보 (${chestDetail.nickname})`)
-        .setFooter({ text: `페이지 ${page + 1} / ${totalPages}` });
+    const embed = new EmbedBuilder().setColor("White").setTitle(`전리품 상세 정보 (${chestDetail.nickname})`);
 
-    let res_str = "";
+    const emoji = await emojiFromUrl(chest.icon);
+    const chestFieldValue = chest.map_detail
+        .map((map) => {
+            return `- ${map.name}: **${map.cur} / ${map.max}**`;
+        })
+        .join("\n");
 
-    const chestPromises = chestsToShow.map(async (chest) => {
-        const emoji = await emojiFromUrl(chest.icon);
-        const chestFieldValue = chest.map_detail
-            .map((map) => {
-                return `- ${map.name}: **${map.cur} / ${map.max}**`;
-            })
-            .join("\n");
-        res_str += `## ${emoji}${chest.name} ${chest.cur} / ${chest.max}\n${chestFieldValue}\n\n`;
-        return { name: `${emoji}${chest.name}`, value: res_str, inline: false };
+    const description = `## ${emoji}${chest.name} ${chest.cur} / ${chest.max}\n${chestFieldValue}`;
+    embed.setDescription(description);
+
+    // StringSelectMenu
+    const select = new StringSelectMenuBuilder()
+        .setCustomId(`chestDetail:${subjectId}:${cid}`)
+        .setPlaceholder("지역을 선택해주세요!");
+
+    const selectPromises = chestDetail.chests.map(async (chest, index) => {
+        const chestEmoji = await emojiFromUrl(chest.icon);
+        return {
+            emoji: `${chestEmoji}`,
+            label: `${chest.name}`,
+            value: index.toString(),
+            default: index === selectedIndex,
+        };
     });
 
-    await Promise.all(chestPromises);
-    embed.setDescription(res_str);
+    const selectOptions = await Promise.all(selectPromises);
+    selectOptions.forEach((option) => {
+        select.addOptions(
+            new StringSelectMenuOptionBuilder()
+                .setLabel(option.label)
+                .setValue(option.value)
+                .setDefault(option.default)
+                .setEmoji(option.emoji)
+        );
+    });
 
-    const prevButton = new ButtonBuilder()
-        .setCustomId(`chestDetail:${subjectId}:${cid}:${page - 1}`)
-        .setLabel("이전")
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(page === 0);
-
-    const nextButton = new ButtonBuilder()
-        .setCustomId(`chestDetail:${subjectId}:${cid}:${page + 1}`)
-        .setLabel("다음")
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(page >= totalPages - 1);
-
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(prevButton, nextButton);
+    const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(select);
 
     return { embed, row };
 }

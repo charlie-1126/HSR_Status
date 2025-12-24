@@ -32,7 +32,8 @@ export default {
         if (
             !interaction.customId.startsWith("menuSelect") &&
             !interaction.customId.startsWith("chestDetail") &&
-            !interaction.customId.startsWith("achievementDetail")
+            !interaction.customId.startsWith("achievementDetail") &&
+            !interaction.customId.startsWith("playrecord")
         )
             return;
 
@@ -48,9 +49,12 @@ export default {
             return;
         }
 
+        const customIdPrefix = interaction.customId.split(":")[0];
         const selectedValue = interaction.isStringSelectMenu()
-            ? interaction.values[0]
-            : interaction.customId.split(":")[0];
+            ? customIdPrefix === "menuSelect"
+                ? interaction.values[0]
+                : customIdPrefix
+            : customIdPrefix;
         const original_message = interaction.message;
 
         // 유저 데이터 확인
@@ -115,15 +119,20 @@ export default {
             await original_message.edit({ embeds: [embed], components: [row, buttonRow], files: [] });
         } else if (selectedValue == "gamerecord") {
         } else if (selectedValue == "chestDetail") {
-            const page = interaction.customId.split(":")[3] ? parseInt(interaction.customId.split(":")[3]) : 0;
+            const selectedIndex =
+                interaction.isStringSelectMenu() && customIdPrefix === "chestDetail"
+                    ? parseInt(interaction.values[0])
+                    : 0;
             const chestDetail = await getChestDetail(userData.uid, userData.ltuid, userData.ltoken);
             if (!chestDetail) return;
 
-            const select = menuSelectUI("none", subjectId, cid);
-            const selectRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(select);
-
-            const { embed, row } = await chestDetailEmbed(chestDetail, page, subjectId, cid);
-            await original_message.edit({ embeds: [embed], components: [selectRow, row], files: [] });
+            const { embed, row } = await chestDetailEmbed(chestDetail, selectedIndex, subjectId, cid);
+            const backBTN = new ButtonBuilder()
+                .setCustomId(`playrecord:${subjectId}:${cid}`)
+                .setLabel("뒤로 가기")
+                .setStyle(ButtonStyle.Primary);
+            const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(backBTN);
+            await original_message.edit({ embeds: [embed], components: [row, buttonRow], files: [] });
         } else if (selectedValue == "achievementDetail") {
             const achievement_detail = await getAchievementDetail(userData.uid, userData.ltuid, userData.ltoken);
             if (!achievement_detail) return;
