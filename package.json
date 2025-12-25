@@ -6,7 +6,7 @@
 		"start": "node dist/index.js",
 		"dev": "set NODE_ENV=development&& nodemon --exec tsx src/index.ts",
 		"build": "tsc",
-		"deploy": "node src/deploy-commands.ts",
+		"deploy": "tsx src/deploy-commands.ts",
 		"bstart": "npm run build && npm run start",
 		"preinstall": "npx only-allow pnpm",
 		"format": "biome format --write ./src",
