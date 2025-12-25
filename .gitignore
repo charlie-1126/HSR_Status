@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 # custom
 data
 log.json
+src/emoji/url/
+src/emoji/emojis.ts
+src/emoji/emojiInterface.ts
