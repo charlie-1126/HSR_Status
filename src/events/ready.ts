@@ -1,24 +1,25 @@
-import { Events, Client } from "discord.js";
+import { type Client, Events } from "discord.js";
 import { startScheduler } from "../services/scheduler";
+import { logger } from "../utils/logger";
 import { registerEmojis } from "../utils/tools/emojiManager";
 
 export default {
-    name: Events.ClientReady,
-    once: true,
-    async execute(client: Client) {
-        console.log(`${client.user?.tag}으로 로그인 성공!`);
-        console.log(`봇이 ${client.guilds.cache.size}개의 서버에서 실행 중`);
+	name: Events.ClientReady,
+	once: true,
+	async execute(client: Client) {
+		logger.info(`${client.user?.tag}으로 로그인 성공!`);
+		logger.info(`봇이 ${client.guilds.cache.size}개의 서버에서 실행 중`);
 
-        // 이모지 등록
-        await registerEmojis();
-        console.log("이모지 등록 완료!");
+		// 이모지 등록
+		await registerEmojis();
+		logger.info("이모지 등록 완료!");
 
-        startScheduler(client);
+		startScheduler(client);
 
-        // 봇 상태 설정
-        client.user?.setPresence({
-            activities: [{ name: "HSR 로테이션 봇", type: 4 }],
-            status: "online",
-        });
-    },
+		// 봇 상태 설정
+		client.user?.setPresence({
+			activities: [{ name: "HSR 로테이션 봇", type: 4 }],
+			status: "online",
+		});
+	},
 };
