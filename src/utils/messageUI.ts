@@ -235,10 +235,15 @@ export function menuSelectUI(cur: string, subjectId: string, cid: string) {
                 .setValue("playrecord")
                 .setDefault(cur == "playrecord"),
             new StringSelectMenuOptionBuilder()
-                .setLabel("게임 전적")
-                .setDescription("게임 전적을 확인합니다.")
-                .setValue("gamerecord")
-                .setDefault(cur == "gamerecord")
+                .setLabel("빛 따라 금 찾아 전적")
+                .setDescription("이상중재, 혼돈, 허구, 종말 전적을 확인합니다.")
+                .setValue("endcontentrecord")
+                .setDefault(cur == "endcontentrecord"),
+            new StringSelectMenuOptionBuilder()
+                .setLabel("우주 전쟁 전적")
+                .setDescription("화폐 전쟁 및 차분화 우주 전적을 확인합니다.")
+                .setValue("weeklycontentrecord")
+                .setDefault(cur == "weeklycontentrecord")
         )
         .setPlaceholder("클릭하여 메뉴를 선택해주세요!");
 

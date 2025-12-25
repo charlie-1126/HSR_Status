@@ -133,7 +133,6 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
     const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
     const gameRecord = await fetchGameRecord(ltuid, ltoken);
     const liveNote = await fetchLiveNote(uid, ltuid, ltoken);
-    const actCalendar = await fetchActCalendar(uid, ltuid, ltoken);
 
     if (
         !userInfo ||
@@ -144,43 +143,12 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
         !gameRecord.data ||
         !liveNote ||
         liveNote.retcode !== 0 ||
-        !liveNote.data ||
-        !actCalendar ||
-        actCalendar.retcode !== 0 ||
-        !actCalendar.data
+        !liveNote.data
     ) {
         return null;
     }
 
     const hsrGameRecord = gameRecord.data.list.find((game: any) => game.game_id == 6);
-    const challenge_list = actCalendar.data.challenge_list || [];
-    const challengeRecord: challengeRecord = { peak: null, boss: null, story: null, chaos: null };
-    challenge_list.forEach((challenge: any) => {
-        if (challenge.status == "challengeStatusUnopened") return;
-        if (challenge.challenge_type == "ChallengeTypePeak") {
-            challengeRecord.peak = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-                rank_icon: challenge.challenge_peak_rank_icon,
-                rank_icon_type: challenge.challenge_peak_rank_icon_type,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeBoss") {
-            challengeRecord.boss = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeStory") {
-            challengeRecord.story = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeChasm") {
-            challengeRecord.chaos = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        }
-    });
 
     const processedUserData = {
         nickname: hsrGameRecord.nickname,
@@ -406,4 +374,54 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
     return characters as Character[];
 }
 
-export { getGameRecord, getChestDetail, getCharacterList, getAchievementDetail };
+async function getEndContentRecord(uid: string, ltuid: string, ltoken: string) {
+    const actCalendar = await fetchActCalendar(uid, ltuid, ltoken);
+    const gameRecord = await fetchGameRecord(ltuid, ltoken);
+    if (
+        !actCalendar ||
+        actCalendar.retcode !== 0 ||
+        !actCalendar.data ||
+        !gameRecord ||
+        gameRecord.retcode !== 0 ||
+        !gameRecord.data
+    ) {
+        return null;
+    }
+
+    const hsrGameRecord = gameRecord.data.list.find((game: any) => game.game_id == 6);
+    const challenge_list = actCalendar.data.challenge_list || [];
+    const challengeRecord: challengeRecord = { peak: null, boss: null, story: null, chaos: null };
+    challenge_list.forEach((challenge: any) => {
+        if (challenge.status == "challengeStatusUnopened") return;
+        if (challenge.challenge_type == "ChallengeTypePeak") {
+            challengeRecord.peak = {
+                current_progress: challenge.current_progress,
+                total_progress: challenge.total_progress,
+                rank_icon: challenge.challenge_peak_rank_icon,
+                rank_icon_type: challenge.challenge_peak_rank_icon_type,
+            };
+        } else if (challenge.challenge_type == "ChallengeTypeBoss") {
+            challengeRecord.boss = {
+                current_progress: challenge.current_progress,
+                total_progress: challenge.total_progress,
+            };
+        } else if (challenge.challenge_type == "ChallengeTypeStory") {
+            challengeRecord.story = {
+                current_progress: challenge.current_progress,
+                total_progress: challenge.total_progress,
+            };
+        } else if (challenge.challenge_type == "ChallengeTypeChasm") {
+            challengeRecord.chaos = {
+                current_progress: challenge.current_progress,
+                total_progress: challenge.total_progress,
+            };
+        }
+    });
+
+    return {
+        nickname: hsrGameRecord.nickname,
+        challengeRecord: challengeRecord,
+    };
+}
+
+export { getGameRecord, getChestDetail, getCharacterList, getAchievementDetail, getEndContentRecord };
