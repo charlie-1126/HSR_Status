@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/index.js",
-		"dev": "set NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
+		"dev": "set NODE_ENV=development&& nodemon --exec tsx src/index.ts",
 		"build": "tsc",
 		"deploy": "node src/deploy-commands.ts",
 		"bstart": "npm run build && npm run start",
@@ -13,10 +13,8 @@
 		"lint": "biome lint ./src"
 	},
 	"dependencies": {
-		"@google/generative-ai": "^0.24.1",
 		"axios": "^1.12.2",
 		"better-sqlite3": "^12.4.1",
-		"cheerio": "^1.1.2",
 		"dayjs": "^1.11.18",
 		"discord.js": "^14.23.2",
 		"dotenv": "^17.2.3",
@@ -26,9 +24,9 @@
 		"@biomejs/biome": "2.3.9",
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^24.8.1",
-		"@types/node-fetch": "^2.6.13",
 		"@types/node-schedule": "^2.1.8",
 		"nodemon": "^3.1.10",
+		"tsx": "^4.21.0",
 		"typescript": "^5.9.3"
 	},
 	"engines": {
