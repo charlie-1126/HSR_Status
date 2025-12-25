@@ -139,8 +139,9 @@ export async function updateAllMessages(client: Client) {
 				}
 			} catch (error) {
 				logger.error(
-					`updateAllMessages: 메시지 처리 중 오류 (channelId: ${msgData.channelId}) ${error}`,
+					`updateAllMessages: 메시지 처리 중 오류 (channelId: ${msgData.channelId})`,
 				);
+				logger.error(error);
 			}
 		}
 
@@ -148,6 +149,7 @@ export async function updateAllMessages(client: Client) {
 			`updateAllMessages: 완료 - 업데이트: ${updatedCount}, 재생성: ${recreatedCount}, 삭제: ${deletedCount}`,
 		);
 	} catch (error) {
-		logger.error(`updateAllMessages: 오류 발생 ${error}`);
+		logger.error(`updateAllMessages: 오류 발생`);
+		logger.error(error);
 	}
 }

@@ -166,13 +166,15 @@ const token =
 		? process.env.TESTBOT_TOKEN
 		: process.env.TOKEN;
 client.login(token).catch((error) => {
-	logger.error("봇 로그인 오류:", error);
+	logger.error("봇 로그인 오류:");
+	logger.error(error);
 	process.exit(1);
 });
 
 // 프로세스 에러 처리
 process.on("unhandledRejection", (error) => {
-	logger.error(`처리되지 않은 Promise 거부: ${error}`);
+	logger.error(`처리되지 않은 Promise 거부:`);
+	logger.error(error);
 });
 
 // commands 컬렉션 내보내기 (다른 파일에서 명령어 목록에 접근할 수 있도록)

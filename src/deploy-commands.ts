@@ -99,7 +99,8 @@ export async function deployCommands() {
 
 		return true;
 	} catch (error) {
-		logger.error(`명령어 등록 중 오류 발생: ${error}`);
+		logger.error(`명령어 등록 중 오류 발생:`);
+		logger.error(error);
 		return false;
 	}
 }

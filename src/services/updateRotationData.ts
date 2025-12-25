@@ -154,6 +154,7 @@ export async function updateRotationData(client?: Client) {
 			);
 		}
 	} catch (error) {
-		logger.error(`updateRotationData: 오류 발생 ${error}`);
+		logger.error(`updateRotationData: 오류 발생 `);
+		logger.error(error);
 	}
 }

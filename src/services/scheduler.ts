@@ -27,7 +27,8 @@ async function koreanbotUpdate(client: Client) {
 			{ headers: { Authorization: process.env.KOREAN_BOTS_API_KEY } },
 		);
 	} catch (error) {
-		logger.error(`Korean Bots API 전송 실패: ${error}`);
+		logger.error(`Korean Bots API 전송 실패: `);
+		logger.error(error);
 	}
 }
 

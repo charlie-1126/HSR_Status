@@ -11,7 +11,7 @@ export const logger = pino({
 			},
 			{
 				target: "pino/file",
-				options: { destination: "./logs/log.json" },
+				options: { destination: "./log.json" },
 			},
 		],
 	},
