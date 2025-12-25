@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
+import { logger } from "./utils/logger";
 
 const client_id =
 	process.env.NODE_ENV === "development"
@@ -32,7 +33,7 @@ export async function deployCommands() {
 				if ("data" in command && "execute" in command) {
 					releaseCommands.push(command.data.toJSON());
 				} else {
-					console.warn(
+					logger.warn(
 						`${filePath} 명령어에 필요한 "data" 또는 "execute" 속성이 없습니다.`,
 					);
 				}
@@ -53,7 +54,7 @@ export async function deployCommands() {
 			if ("data" in command && "execute" in command) {
 				testCommands.push(command.data.toJSON());
 			} else {
-				console.warn(
+				logger.warn(
 					`${filePath} 명령어에 필요한 "data" 또는 "execute" 속성이 없습니다.`,
 				);
 			}
@@ -66,7 +67,7 @@ export async function deployCommands() {
 			? process.env.TESTBOT_TOKEN
 			: process.env.TOKEN;
 	if (!token) {
-		console.error("봇 토큰이 설정되지 않았습니다. .env 파일을 확인해주세요.");
+		logger.error("봇 토큰이 설정되지 않았습니다. .env 파일을 확인해주세요.");
 		return false;
 	}
 	const rest = new REST({ version: "10" }).setToken(token);
@@ -74,16 +75,16 @@ export async function deployCommands() {
 	try {
 		// 전역 명령어 등록
 		if (releaseCommands.length > 0) {
-			console.log(`${releaseCommands.length}개의 전역 명령어를 등록 중...`);
+			logger.info(`${releaseCommands.length}개의 전역 명령어를 등록 중...`);
 			await rest.put(Routes.applicationCommands(client_id || ""), {
 				body: releaseCommands,
 			});
-			console.log("전역 명령어 등록 완료!");
+			logger.info("전역 명령어 등록 완료!");
 		}
 
 		// 테스트 서버 명령어 등록
 		if (testCommands.length > 0) {
-			console.log(`${testCommands.length}개의 테스트 서버 명령어를 등록 중...`);
+			logger.info(`${testCommands.length}개의 테스트 서버 명령어를 등록 중...`);
 			await rest.put(
 				Routes.applicationGuildCommands(
 					client_id || "",
@@ -93,12 +94,12 @@ export async function deployCommands() {
 					body: testCommands,
 				},
 			);
-			console.log("테스트 서버 명령어 등록 완료!");
+			logger.info("테스트 서버 명령어 등록 완료!");
 		}
 
 		return true;
 	} catch (error) {
-		console.error("명령어 등록 중 오류 발생:", error);
+		logger.error(`명령어 등록 중 오류 발생: ${error}`);
 		return false;
 	}
 }
@@ -106,7 +107,7 @@ export async function deployCommands() {
 // 직접 실행될 때 자동으로 명령어 배포 실행
 if (require.main === module) {
 	deployCommands().catch((error) => {
-		console.error("명령어 배포 실패:", error);
+		logger.error("명령어 배포 실패:", error);
 		process.exit(1);
 	});
 }

@@ -8,7 +8,7 @@ import {
 	TextChannel,
 } from "discord.js";
 import { formatTime, getTimeData } from "../utils/getTimeData";
-import { logError, logToFile } from "../utils/tools/logger";
+import { logger } from "../utils/logger";
 import {
 	deleteUpdateMessage,
 	getAllUpdateMessages,
@@ -21,19 +21,21 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 export async function updateAllMessages(client: Client) {
 	try {
-		logToFile("updateAllMessages", "메시지 업데이트 시작");
+		logger.info("updateAllMessages: 메시지 업데이트 시작");
 
 		const allMessages = getAllUpdateMessages();
 
 		if (allMessages.length === 0) {
-			logToFile("updateAllMessages", "업데이트할 메시지가 없습니다.");
+			logger.info("updateAllMessages: 업데이트할 메시지가 없습니다.");
 			return;
 		}
 
 		// 로테이션 데이터 가져오기
 		const timedata = await getTimeData();
 		if (timedata.error) {
-			logError("updateAllMessages", "타임 데이터 가져오기 실패", timedata.data);
+			logger.error(
+				`updateAllMessages: 타임 데이터 가져오기 실패 ${timedata.data}`,
+			);
 			return;
 		}
 
@@ -58,9 +60,8 @@ export async function updateAllMessages(client: Client) {
 
 				// 채널이 삭제되었거나 접근할 수 없는 경우
 				if (!channel) {
-					logToFile(
-						"updateAllMessages",
-						`채널을 찾을 수 없음: ${msgData.channelId} - DB에서 삭제`,
+					logger.info(
+						`updateAllMessages: 채널을 찾을 수 없음: ${msgData.channelId} - DB에서 삭제`,
 					);
 					deleteUpdateMessage(msgData.guildId);
 					deletedCount++;
@@ -69,9 +70,8 @@ export async function updateAllMessages(client: Client) {
 
 				// 텍스트 채널인지 확인
 				if (!channel.isTextBased() || !(channel instanceof TextChannel)) {
-					logToFile(
-						"updateAllMessages",
-						`텍스트 채널이 아님: ${msgData.channelId} - DB에서 삭제`,
+					logger.info(
+						`updateAllMessages: 텍스트 채널이 아님: ${msgData.channelId} - DB에서 삭제`,
 					);
 					deleteUpdateMessage(msgData.guildId);
 					deletedCount++;
@@ -87,9 +87,8 @@ export async function updateAllMessages(client: Client) {
 					if (error.code === 10008) {
 						try {
 							// Unknown Message
-							logToFile(
-								"updateAllMessages",
-								`메시지가 삭제됨: ${msgData.MessageId} - 새 메시지 생성`,
+							logger.info(
+								`updateAllMessages: 메시지를 찾을 수 없음: ${msgData.MessageId} - 새로 생성`,
 							);
 
 							// 새 메시지 생성
@@ -105,10 +104,8 @@ export async function updateAllMessages(client: Client) {
 							continue;
 						} catch (error: any) {
 							if (error.code === 50013 || error.code === 50001) {
-								logError(
-									"updateAllMessages",
-									`권한 없음: ${msgData.channelId} - 메시지 생성 실패`,
-									error,
+								logger.error(
+									`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 생성 실패`,
 								);
 								deleteUpdateMessage(msgData.guildId);
 								deletedCount++;
@@ -129,9 +126,8 @@ export async function updateAllMessages(client: Client) {
 						updatedCount++;
 					} catch (error: any) {
 						if (error.code === 50013 || error.code === 50001) {
-							logError(
-								"updateAllMessages",
-								`권한 없음: ${msgData.channelId} - 메시지 수정 실패`,
+							logger.error(
+								`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 수정 실패`,
 								error,
 							);
 							deleteUpdateMessage(msgData.guildId);
@@ -142,19 +138,16 @@ export async function updateAllMessages(client: Client) {
 					}
 				}
 			} catch (error) {
-				logError(
-					"updateAllMessages",
-					`메시지 처리 중 오류 (channelId: ${msgData.channelId})`,
-					error,
+				logger.error(
+					`updateAllMessages: 메시지 처리 중 오류 (channelId: ${msgData.channelId}) ${error}`,
 				);
 			}
 		}
 
-		logToFile(
-			"updateAllMessages",
-			`완료 - 업데이트: ${updatedCount}, 재생성: ${recreatedCount}, 삭제: ${deletedCount}`,
+		logger.info(
+			`updateAllMessages: 완료 - 업데이트: ${updatedCount}, 재생성: ${recreatedCount}, 삭제: ${deletedCount}`,
 		);
 	} catch (error) {
-		logError("updateAllMessages", "오류 발생", error);
+		logger.error(`updateAllMessages: 오류 발생 ${error}`);
 	}
 }

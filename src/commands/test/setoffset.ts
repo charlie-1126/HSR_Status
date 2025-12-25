@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { updateAllMessages } from "../../services/updateMessages";
 import { setOffset } from "../../utils/getOffset";
-import { logToFile } from "../../utils/tools/logger";
+import { logger } from "../../utils/logger";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -73,7 +73,7 @@ export default {
 			setOffset(offsetKey, dateString);
 
 			// 데이터가 변경되었으므로 메시지 업데이트
-			logToFile("setoffset", `오프셋 변경: ${itemMap[item]} -> ${dateString}`);
+			logger.info(`오프셋 변경: ${itemMap[item]} -> ${dateString}`);
 			await updateAllMessages(interaction.client);
 
 			const itemNameMap: Record<string, string> = {

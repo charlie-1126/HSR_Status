@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import axios from "axios";
 import "dotenv/config";
+import { logger } from "./logger";
 
 const LTUID = process.env.LTUID_V2 || "";
 const LTOKEN = process.env.LTOKEN_V2 || "";
@@ -62,7 +63,7 @@ async function fetchActCalendar(
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -106,7 +107,7 @@ async function fetchGameRecord(ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -128,7 +129,7 @@ async function fetchLiveNote(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -150,7 +151,7 @@ async function fetchCharacters(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -172,7 +173,7 @@ async function fetchChests(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -194,7 +195,7 @@ async function fetchAchievement(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -216,7 +217,7 @@ async function fetchRogueTourn(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 
@@ -238,7 +239,7 @@ async function fetchGridFight(uid: string, ltuid: string, ltoken: string) {
 
 		return response.data;
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 	}
 }
 

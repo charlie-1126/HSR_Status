@@ -5,7 +5,7 @@ import utc from "dayjs/plugin/utc";
 import type { Client } from "discord.js";
 import { getOffset, setOffset } from "../utils/getOffset";
 import { getTimeData } from "../utils/getTimeData";
-import { logError, logToFile } from "../utils/tools/logger";
+import { logger } from "../utils/logger";
 import { updateAllMessages } from "./updateMessages";
 
 dayjs.extend(utc);
@@ -21,20 +21,16 @@ export async function updateRotationData(client?: Client) {
 		// 현재 타임 데이터 가져오기
 		const timedata = await getTimeData();
 		if (timedata.error) {
-			logError(
-				"updateRotationData",
-				"타임 데이터 가져오기 실패",
-				timedata.data,
+			logger.error(
+				`updateRotationData: 타임 데이터 가져오기 실패 ${timedata.data}`,
 			);
 			return;
 		}
 
 		// 타입 가드: data가 문자열이 아닌 객체인지 확인
 		if (typeof timedata.data === "string") {
-			logError(
-				"updateRotationData",
-				"타임 데이터가 문자열입니다",
-				timedata.data,
+			logger.error(
+				`updateRotationData: 타임 데이터가 문자열입니다: ${timedata.data}`,
 			);
 			return;
 		}
@@ -74,7 +70,7 @@ export async function updateRotationData(client?: Client) {
 		if (previousTimeData !== null) {
 			// 이전 데이터와 현재 데이터 비교
 			if (previousTimeData !== currentTimeDataStr) {
-				logToFile("updateRotationData", "타임 데이터 변경 감지");
+				logger.info("updateRotationData: 타임 데이터 변경 감지");
 				needsUpdate = true;
 			}
 		} else {
@@ -141,24 +137,23 @@ export async function updateRotationData(client?: Client) {
 		}
 
 		if (offsetExpired) {
-			logToFile("updateRotationData", "만료된 오프셋을 정리했습니다.");
+			logger.info("updateRotationData: 만료된 오프셋을 정리했습니다.");
 			needsUpdate = true;
 		}
 
 		// 데이터가 변경되었으면 메시지 업데이트
 		if (needsUpdate && client) {
-			logToFile(
-				"updateRotationData",
-				"데이터 변경 감지 - 메시지 업데이트 시작",
+			logger.info(
+				"updateRotationData: 데이터 변경 감지 - 메시지 업데이트 시작",
 			);
+
 			await updateAllMessages(client);
 		} else if (needsUpdate) {
-			logToFile(
-				"updateRotationData",
-				"데이터 변경 감지되었으나 클라이언트가 없어 메시지 업데이트를 건너뜁니다.",
+			logger.info(
+				"updateRotationData: 데이터 변경 감지되었으나 클라이언트가 없어 메시지 업데이트를 건너뜁니다.",
 			);
 		}
 	} catch (error) {
-		logError("updateRotationData", "오류 발생", error);
+		logger.error(`updateRotationData: 오류 발생 ${error}`);
 	}
 }

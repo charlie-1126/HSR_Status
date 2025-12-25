@@ -4,6 +4,3 @@ dist/
 log.txt
 logs/
 .env
-src/emoji/url/
-src/emoji/emojis.ts
-src/emoji/emojiInterface.ts

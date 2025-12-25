@@ -2,11 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import type { APIEmoji } from "discord.js";
 import { REST } from "discord.js";
-import { logToFile } from "./logger";
 import "dotenv/config";
 import crypto from "node:crypto";
 import http from "node:http";
 import https from "node:https";
+import { logger } from "../logger";
 
 const TOKEN =
 	(process.env.NODE_ENV === "development"
@@ -46,7 +46,7 @@ async function registerEmojis() {
 
 		if (!allEmojiNames.includes(emoji.name + "")) {
 			await rest.delete(`/applications/${CLIENT_ID}/emojis/${emoji.id}`);
-			logToFile("emojiManager", `Deleted ${emoji.name} emoji`);
+			logger.info(`emojiManager: Deleted ${emoji.name} emoji`);
 		}
 	}
 
@@ -67,7 +67,7 @@ async function registerEmojis() {
 					name: emojiName,
 				},
 			});
-			logToFile("emojiManager", `Uploaded ${emojiName} emoji`);
+			logger.info(`emojiManager: Uploaded ${emojiName} emoji`);
 		}
 	}
 
@@ -84,7 +84,7 @@ async function registerEmojis() {
 					name: emojiName,
 				},
 			});
-			logToFile("emojiManager", `Uploaded ${emojiName} emoji from url folder`);
+			logger.info(`emojiManager: Uploaded ${emojiName} emoji from url folder`);
 		}
 	}
 
@@ -161,9 +161,8 @@ async function emojiFromUrl(url: string): Promise<string> {
 
 	// 파일이 없으면 다운로드 (emoji/url 폴더에 저장)
 	await downloadImage(url, filePath);
-	logToFile(
-		"emojiManager",
-		`Downloaded ${emojiName}.${fileExt} from ${url} to url folder`,
+	logger.info(
+		`emojiManager: Downloaded ${emojiName}.${fileExt} from ${url} to url folder`,
 	);
 
 	// Discord에 이모지 등록
@@ -175,7 +174,7 @@ async function emojiFromUrl(url: string): Promise<string> {
 		},
 	})) as APIEmoji;
 
-	logToFile("emojiManager", `Uploaded ${emojiName} emoji`);
+	logger.info(`emojiManager: Uploaded ${emojiName} emoji`);
 
 	// 마크다운 형식으로 반환
 	return `<${newEmoji.animated ? "a" : ""}:${newEmoji.name}:${newEmoji.id}>`;

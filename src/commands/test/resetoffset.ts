@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import { updateAllMessages } from "../../services/updateMessages";
 import { setOffset } from "../../utils/getOffset";
-import { logToFile } from "../../utils/tools/logger";
+import { logger } from "../../utils/logger";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -36,7 +36,7 @@ export default {
 			setOffset("previewProgramTime", null);
 
 			// 데이터가 변경되었으므로 메시지 업데이트
-			logToFile("resetoffset", "모든 오프셋 리셋");
+			logger.info("resetoffset 모든 오프셋 리셋");
 			await updateAllMessages(interaction.client);
 
 			await interaction.reply({

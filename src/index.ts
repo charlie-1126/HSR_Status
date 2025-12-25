@@ -10,6 +10,7 @@ import {
 } from "discord.js";
 import "dotenv/config";
 import { deployCommands } from "./deploy-commands";
+import { logger } from "./utils/logger";
 
 // 데이터 폴더 생성
 const dataDir = path.join(__dirname, "../data");
@@ -39,13 +40,13 @@ interface Command {
 deployCommands()
 	.then((success) => {
 		if (success) {
-			console.log("명령어 배포 완료!");
+			logger.info("명령어 배포 완료!");
 		} else {
-			console.error("명령어 배포 실패!");
+			logger.error("명령어 배포 실패!");
 		}
 	})
 	.catch((error) => {
-		console.error("명령어 배포 중 오류 발생:", error);
+		logger.error("명령어 배포 중 오류 발생:", error);
 	});
 
 // 명령어를 저장할 컬렉션
@@ -74,7 +75,7 @@ if (fs.existsSync(commandsPath)) {
 					if ("data" in command && "execute" in command) {
 						commands.set(command.data.name, command);
 					} else {
-						console.warn(
+						logger.warn(
 							`${filePath} 명령어에 필요한 "data" 또는 "execute" 속성이 없습니다.`,
 						);
 					}
@@ -96,7 +97,7 @@ if (fs.existsSync(commandsPath)) {
 				if ("data" in command && "execute" in command) {
 					commands.set(command.data.name, command);
 				} else {
-					console.warn(
+					logger.warn(
 						`${filePath} 명령어에 필요한 "data" 또는 "execute" 속성이 없습니다.`,
 					);
 				}
@@ -135,14 +136,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	const command = commands.get(interaction.commandName);
 
 	if (!command) {
-		console.error(`${interaction.commandName} 명령어를 찾을 수 없습니다.`);
+		logger.error(`${interaction.commandName} 명령어를 찾을 수 없습니다.`);
 		return;
 	}
 
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		console.error(`명령어 실행 중 오류 발생:`, error);
+		logger.error(`명령어 실행 중 오류 발생:`);
+		logger.error(error);
 
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({
@@ -164,13 +166,13 @@ const token =
 		? process.env.TESTBOT_TOKEN
 		: process.env.TOKEN;
 client.login(token).catch((error) => {
-	console.error("봇 로그인 오류:", error);
+	logger.error("봇 로그인 오류:", error);
 	process.exit(1);
 });
 
 // 프로세스 에러 처리
 process.on("unhandledRejection", (error) => {
-	console.error("처리되지 않은 Promise 거부:", error);
+	logger.error(`처리되지 않은 Promise 거부: ${error}`);
 });
 
 // commands 컬렉션 내보내기 (다른 파일에서 명령어 목록에 접근할 수 있도록)

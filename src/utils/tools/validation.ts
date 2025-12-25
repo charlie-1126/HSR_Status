@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import axios from "axios";
 import { getUserData } from "../../services/dbHandler";
+import { logger } from "../logger";
 
 const DS_SALT = "6s25p5ox5y14umn1p61aqyyvbvvl3lrt";
 
@@ -60,7 +61,7 @@ export async function checkAPI(uid: string, ltuid: string, ltoken: string) {
 			return false;
 		}
 	} catch (err: any) {
-		console.error("API 요청 오류:", err.response?.data || err);
+		logger.error("API 요청 오류:", err.response?.data || err);
 		return false;
 	}
 }

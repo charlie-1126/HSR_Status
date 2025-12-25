@@ -5,6 +5,7 @@ import {
 	SlashCommandBuilder,
 } from "discord.js";
 import { updateAllMessages } from "../../services/updateMessages";
+import { logger } from "../../utils/logger";
 
 export default {
 	data: new SlashCommandBuilder()
@@ -37,7 +38,8 @@ export default {
 
 			await interaction.editReply({ embeds: [successEmbed] });
 		} catch (error) {
-			console.error("강제 업데이트 실패:", error);
+			logger.error("강제 업데이트 실패:");
+			logger.error(error);
 
 			const errorEmbed = new EmbedBuilder()
 				.setColor("Red")
