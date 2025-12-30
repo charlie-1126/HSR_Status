@@ -118,6 +118,21 @@ export interface ChestDetail {
 	chests: Chest[];
 }
 
+export interface EndContentRecord {
+	nickname: string;
+	challengeRecord: {
+		peak: {
+			current_progress: number;
+			total_progress: number;
+			rank_icon: string;
+			rank_icon_type: string;
+		} | null;
+		boss: { current_progress: number; total_progress: number } | null;
+		story: { current_progress: number; total_progress: number } | null;
+		chaos: { current_progress: number; total_progress: number } | null;
+	};
+}
+
 export interface World {
 	name: string;
 	world_cur: number;

@@ -63,18 +63,20 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
 		grid_fight_weekly_max: liveNote.data.grid_fight_weekly_max,
 		current_rogue_score: liveNote.data.current_rogue_score,
 		max_rogue_score: liveNote.data.max_rogue_score,
-		expeditions: liveNote.data.expeditions.map((expedition: hoyolabType.RowExpedition) => {
-			return {
-				name: expedition.name,
-				icon: expedition.item_url,
-				status: expedition.status,
-				remaining_time: expedition.remaining_time,
-				finish_time:
-					expedition.remaining_time !== 0
-						? dayjs(expedition.finish_ts * 1000).tz()
-						: null,
-			};
-		}),
+		expeditions: liveNote.data.expeditions.map(
+			(expedition: hoyolabType.RowExpedition) => {
+				return {
+					name: expedition.name,
+					icon: expedition.item_url,
+					status: expedition.status,
+					remaining_time: expedition.remaining_time,
+					finish_time:
+						expedition.remaining_time !== 0
+							? dayjs(expedition.finish_ts * 1000).tz()
+							: null,
+				};
+			},
+		),
 		accepted_expedition_num: liveNote.data.accepted_epedition_num,
 		total_expedition_num: liveNote.data.total_expedition_num,
 		weekly_cocoon_cnt: liveNote.data.weekly_cocoon_cnt,
@@ -159,14 +161,16 @@ async function getAchievementDetail(
 		gold_num: achievement_data.data.gold_num,
 		silver_num: achievement_data.data.silver_num,
 		copper_num: achievement_data.data.copper_num,
-		achievements: achievement_data.data.list.map((achieve: hoyolabType.RowAchievement) => {
-			return {
-				name: achieve.name,
-				icon: achieve.icon,
-				cur: achieve.cur,
-				max: achieve.max,
-			};
-		}),
+		achievements: achievement_data.data.list.map(
+			(achieve: hoyolabType.RowAchievement) => {
+				return {
+					name: achieve.name,
+					icon: achieve.icon,
+					cur: achieve.cur,
+					max: achieve.max,
+				};
+			},
+		),
 	} as hoyolabType.achievementDetail;
 }
 
@@ -223,7 +227,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 						level: char.equip.level,
 						icon: char.equip.icon,
 						rarity: char.equip.rarity,
-				  }
+					}
 				: null,
 			properties: char.properties.map((prop) => {
 				return {

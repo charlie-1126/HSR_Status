@@ -245,6 +245,34 @@ export async function achievementDetailEmbed(
 	return embed;
 }
 
+export function endContentEmbed(challengeRecord: hoyolabType.EndContentRecord) {
+	const embed = new EmbedBuilder()
+		.setColor("White")
+		.setTitle(`빛 따라 금 찾아 전적 (${challengeRecord.nickname})`)
+		.setDescription(
+			`- 이상중재 전적: ${
+				challengeRecord.challengeRecord.peak
+					? `${challengeRecord.challengeRecord.peak.current_progress} / ${challengeRecord.challengeRecord.peak.total_progress}`
+					: "미오픈"
+			}\n- 혼돈의 기억 전적: ${
+				challengeRecord.challengeRecord.chaos
+					? `${challengeRecord.challengeRecord.chaos.current_progress} / ${challengeRecord.challengeRecord.chaos.total_progress}`
+					: "미오픈"
+			}\n- 허구 이야기 전적: ${
+				challengeRecord.challengeRecord.story
+					? `${challengeRecord.challengeRecord.story.current_progress} / ${challengeRecord.challengeRecord.story.total_progress}`
+					: "미오픈"
+			}\n- 종말의 환영 전적: ${
+				challengeRecord.challengeRecord.boss
+					? `${challengeRecord.challengeRecord.boss.current_progress} / ${challengeRecord.challengeRecord.boss.total_progress}`
+					: "미오픈"
+			}`,
+		)
+		.setTimestamp();
+
+	return embed;
+}
+
 export function menuSelectUI(cur: string, subjectId: string, cid: string) {
 	const select = new StringSelectMenuBuilder()
 		.setCustomId(`menuSelect:${subjectId}:${cid}`)
