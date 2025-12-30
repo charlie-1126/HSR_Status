@@ -3,11 +3,9 @@ import path from "node:path";
 import { REST, Routes } from "discord.js";
 import "dotenv/config";
 import { logger } from "./utils/logger";
+import { CLIENT_ID, TOKEN } from "./utils/tools/environmentManager";
 
-const client_id =
-	process.env.NODE_ENV === "development"
-		? process.env.TESTBOT_CLIENT_ID
-		: process.env.CLIENT_ID;
+const client_id = CLIENT_ID;
 
 export async function deployCommands() {
 	const releaseCommands: any[] = [];
@@ -62,10 +60,7 @@ export async function deployCommands() {
 	}
 
 	// REST API 인스턴스 생성
-	const token =
-		process.env.NODE_ENV === "development"
-			? process.env.TESTBOT_TOKEN
-			: process.env.TOKEN;
+	const token = TOKEN;
 	if (!token) {
 		logger.error("봇 토큰이 설정되지 않았습니다. .env 파일을 확인해주세요.");
 		return false;

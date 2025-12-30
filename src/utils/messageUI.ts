@@ -34,7 +34,7 @@ interface ChestDetail {
 	chests: Chest[];
 }
 
-export async function accountLinkUI(isTokenExpired: boolean = false) {
+export async function accountLinkUI(isTokenExpired = false) {
 	const embed = new EmbedBuilder()
 		.setColor(isTokenExpired ? "Red" : "DarkGrey")
 		.setTitle(isTokenExpired ? "토큰 만료" : "계정 연동 진행")
@@ -65,7 +65,11 @@ export async function gameRecordEmbed(gameRecord: any) {
 		async (expedition: any) => {
 			const emoji = await emojiFromUrl(expedition.icon);
 
-			return `${emoji}${expedition.finish_time == null ? "완료됨" : `<t:${expedition.finish_time.unix()}:R>`}`;
+			return `${emoji}${
+				expedition.finish_time == null
+					? "완료됨"
+					: `<t:${expedition.finish_time.unix()}:R>`
+			}`;
 		},
 	);
 
@@ -81,7 +85,9 @@ export async function gameRecordEmbed(gameRecord: any) {
 			},
 			{
 				name: "개척력",
-				value: `${emojis.stamina}${gameRecord.current_stamina} / ${gameRecord.max_stamina} ${
+				value: `${emojis.stamina}${gameRecord.current_stamina} / ${
+					gameRecord.max_stamina
+				} ${
 					gameRecord.current_stamina == gameRecord.max_stamina
 						? "(가득참)"
 						: `<t:${gameRecord.stamina_full_time.unix()}:R>`
@@ -90,9 +96,9 @@ export async function gameRecordEmbed(gameRecord: any) {
 			},
 			{
 				name: "예비 개척력",
-				value: `${emojis.reserved_stamina}${gameRecord.current_reserve_stamina}${
-					gameRecord.is_reserve_stamina_full ? "(가득참)" : ""
-				}`,
+				value: `${emojis.reserved_stamina}${
+					gameRecord.current_reserve_stamina
+				}${gameRecord.is_reserve_stamina_full ? "(가득참)" : ""}`,
 				inline: true,
 			},
 			{
@@ -259,31 +265,31 @@ export async function achievementDetailEmbed(achievementDetail: any) {
 }
 
 export function menuSelectUI(cur: string, subjectId: string, cid: string) {
-    const select = new StringSelectMenuBuilder()
-        .setCustomId(`menuSelect:${subjectId}:${cid}`)
-        .addOptions(
-            new StringSelectMenuOptionBuilder()
-                .setLabel("메인 프로필")
-                .setDescription("메인 프로필을 확인합니다.")
-                .setValue("mainprofile")
-                .setDefault(cur == "mainprofile"),
-            new StringSelectMenuOptionBuilder()
-                .setLabel("플레이 기록")
-                .setDescription("플레이 기록을 확인합니다.")
-                .setValue("playrecord")
-                .setDefault(cur == "playrecord"),
-            new StringSelectMenuOptionBuilder()
-                .setLabel("빛 따라 금 찾아 전적")
-                .setDescription("이상중재, 혼돈, 허구, 종말 전적을 확인합니다.")
-                .setValue("endcontentrecord")
-                .setDefault(cur == "endcontentrecord"),
-            new StringSelectMenuOptionBuilder()
-                .setLabel("우주 전쟁 전적")
-                .setDescription("화폐 전쟁 및 차분화 우주 전적을 확인합니다.")
-                .setValue("weeklycontentrecord")
-                .setDefault(cur == "weeklycontentrecord")
-        )
-        .setPlaceholder("클릭하여 메뉴를 선택해주세요!");
+	const select = new StringSelectMenuBuilder()
+		.setCustomId(`menuSelect:${subjectId}:${cid}`)
+		.addOptions(
+			new StringSelectMenuOptionBuilder()
+				.setLabel("메인 프로필")
+				.setDescription("메인 프로필을 확인합니다.")
+				.setValue("mainprofile")
+				.setDefault(cur == "mainprofile"),
+			new StringSelectMenuOptionBuilder()
+				.setLabel("플레이 기록")
+				.setDescription("플레이 기록을 확인합니다.")
+				.setValue("playrecord")
+				.setDefault(cur == "playrecord"),
+			new StringSelectMenuOptionBuilder()
+				.setLabel("빛 따라 금 찾아 전적")
+				.setDescription("이상중재, 혼돈, 허구, 종말 전적을 확인합니다.")
+				.setValue("endcontentrecord")
+				.setDefault(cur == "endcontentrecord"),
+			new StringSelectMenuOptionBuilder()
+				.setLabel("우주 전쟁 전적")
+				.setDescription("화폐 전쟁 및 차분화 우주 전적을 확인합니다.")
+				.setValue("weeklycontentrecord")
+				.setDefault(cur == "weeklycontentrecord"),
+		)
+		.setPlaceholder("클릭하여 메뉴를 선택해주세요!");
 
 	return select;
 }

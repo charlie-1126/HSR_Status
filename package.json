@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node dist/index.js",
 		"dev": "nodemon --exec tsx src/index.ts",
-		"build": "tsc",
+		"build": "tsc && mkdir -p dist/emoji/url && cp -r src/emoji/*.png dist/emoji/ 2>/dev/null || true",
 		"deploy": "tsx src/deploy-commands.ts",
 		"bstart": "npm run build && npm run start",
 		"preinstall": "npx only-allow pnpm",

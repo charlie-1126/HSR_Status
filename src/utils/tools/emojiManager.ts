@@ -1,21 +1,14 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
+import http from "node:http";
+import https from "node:https";
 import path from "node:path";
 import type { APIEmoji } from "discord.js";
 import { REST } from "discord.js";
 import "dotenv/config";
-import crypto from "node:crypto";
-import http from "node:http";
-import https from "node:https";
 import { logger } from "../logger";
+import { CLIENT_ID, TOKEN } from "../tools/environmentManager";
 
-const TOKEN =
-	(process.env.NODE_ENV === "development"
-		? process.env.TESTBOT_TOKEN
-		: process.env.TOKEN) || "";
-const CLIENT_ID =
-	(process.env.NODE_ENV === "development"
-		? process.env.TESTBOT_CLIENT_ID
-		: process.env.CLIENT_ID) || "";
 const EMOJI_DIR = path.join(__dirname, "../..", "emoji");
 const EMOJI_URL_DIR = path.join(EMOJI_DIR, "url");
 
@@ -63,7 +56,9 @@ async function registerEmojis() {
 			const base64 = fs.readFileSync(emojiPath).toString("base64");
 			await rest.post(`/applications/${CLIENT_ID}/emojis`, {
 				body: {
-					image: `data:image/${emoji.split(".")[1] === "png" ? "png" : "gif"};base64,${base64}`,
+					image: `data:image/${
+						emoji.split(".")[1] === "png" ? "png" : "gif"
+					};base64,${base64}`,
 					name: emojiName,
 				},
 			});
@@ -80,7 +75,9 @@ async function registerEmojis() {
 				.toString("base64");
 			await rest.post(`/applications/${CLIENT_ID}/emojis`, {
 				body: {
-					image: `data:image/${emoji.split(".")[1] === "png" ? "png" : "gif"};base64,${base64}`,
+					image: `data:image/${
+						emoji.split(".")[1] === "png" ? "png" : "gif"
+					};base64,${base64}`,
 					name: emojiName,
 				},
 			});
