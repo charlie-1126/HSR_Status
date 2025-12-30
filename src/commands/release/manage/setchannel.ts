@@ -3,6 +3,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import {
 	type ChatInputCommandInteraction,
+	DiscordAPIError,
 	EmbedBuilder,
 	InteractionContextType,
 	MessageFlags,
@@ -21,13 +22,23 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName("채널설정")
-		.setDescription("HSR 로테이션 공지 채널을 설정합니다.")
+		.setName("setchannel")
+		.setNameLocalizations({
+			ko: "채널설정",
+		})
+		.setDescription("Set the HSR rotation announcement channel.")
+		.setDescriptionLocalizations({
+			ko: "HSR 로테이션 공지 채널을 설정합니다.",
+		})
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addChannelOption((option) =>
 			option
-				.setName("채널")
-				.setDescription("로테이션 공지를 보낼 채널을 선택하세요.")
+				.setName("channel")
+				.setNameLocalizations({ ko: "채널" })
+				.setDescription("Select the channel to send rotation announcements.")
+				.setDescriptionLocalizations({
+					ko: "로테이션 공지를 보낼 채널을 선택하세요.",
+				})
 				.setRequired(true),
 		)
 		.setContexts(InteractionContextType.Guild),
@@ -51,7 +62,7 @@ export default {
 			return;
 		}
 
-		const channelId = interaction.options.getChannel("채널", true)?.id;
+		const channelId = interaction.options.getChannel("channel", true)?.id;
 		const channel = interaction.client.channels.cache.get(channelId);
 		if (!channel || !channel.isTextBased() || channel.isDMBased()) {
 			await interaction.reply({
@@ -74,7 +85,9 @@ export default {
 
 		// 설정 저장
 		const updateMessage = getUpdateMessage(interaction.guild.id);
-		let isSending = updateMessage ? updateMessage.channelId != channelId : true;
+		let isSending = updateMessage
+			? updateMessage.channelId !== channelId
+			: true;
 
 		// 채널이 같더라도 메시지가 삭제되었는지 확인
 		if (!isSending && updateMessage) {
@@ -101,22 +114,24 @@ export default {
 					});
 				const message = await channel.send({ embeds: [embed] });
 				setupdateMessage(interaction.guild.id, channelId, message.id);
-			} catch (error: any) {
-				if (error.code === 50013 || error.code === 50001) {
-					const errorEmbed = new EmbedBuilder()
-						.setColor("Red")
-						.setTitle("❌ 필수 권한 누락")
-						.setDescription(
-							`봇이 <#${channelId}> 채널에 메시지를 보낼 권한이 없습니다.\n\n**필수 권한:**\n- 채널 보기\n- 메시지 보내기\n- 링크 첨부\n\n**해결 방법:**\n채널 설정 → 권한 → 봇 역할에 위 권한을 허용해주세요.`,
-						);
+			} catch (error: unknown) {
+				if (error instanceof DiscordAPIError) {
+					if (error.code === 50013 || error.code === 50001) {
+						const errorEmbed = new EmbedBuilder()
+							.setColor("Red")
+							.setTitle("❌ 필수 권한 누락")
+							.setDescription(
+								`봇이 <#${channelId}> 채널에 메시지를 보낼 권한이 없습니다.\n\n**필수 권한:**\n- 채널 보기\n- 메시지 보내기\n- 링크 첨부\n\n**해결 방법:**\n채널 설정 → 권한 → 봇 역할에 위 권한을 허용해주세요.`,
+							);
 
-					await interaction.reply({
-						embeds: [errorEmbed],
-						flags: MessageFlags.Ephemeral,
-					});
-					return;
+						await interaction.reply({
+							embeds: [errorEmbed],
+							flags: MessageFlags.Ephemeral,
+						});
+						return;
+					}
+					throw error;
 				}
-				throw error;
 			}
 		}
 		const successEmbed = new EmbedBuilder()

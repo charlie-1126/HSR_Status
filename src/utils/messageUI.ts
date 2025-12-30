@@ -5,6 +5,7 @@ import {
 	ButtonStyle,
 	ComponentType,
 	EmbedBuilder,
+	InteractionResponse,
 	LabelBuilder,
 	Message,
 	MessageFlags,
@@ -17,24 +18,6 @@ import {
 import { emojis } from "../emoji/emojis";
 import * as hoyolabType from "../types/hoyolabType";
 import { emojiFromUrl } from "../utils/tools/emojiManager";
-
-interface Chest {
-	name: string;
-	cur: number;
-	max: number;
-	icon: string;
-	map_detail: {
-		name: string;
-		cur: number;
-		max: number;
-	}[];
-}
-
-interface ChestDetail {
-	nickname: string;
-	chest_num: number;
-	chests: Chest[];
-}
 
 export async function accountLinkUI(isTokenExpired = false) {
 	const embed = new EmbedBuilder()
@@ -159,7 +142,7 @@ export function playRecordEmbed(gameRecord: hoyolabType.GameRecord) {
 }
 
 export async function chestDetailEmbed(
-	chestDetail: ChestDetail,
+	chestDetail: hoyolabType.ChestDetail,
 	selectedIndex: number,
 	subjectId: string,
 	cid: string,
@@ -307,7 +290,7 @@ export function expiredEmbed() {
 }
 
 export async function setupAccountLinkCollector(
-	msg: Message,
+	msg: Message | InteractionResponse,
 	subjectId: string,
 	existingData?: { uid: string; ltuid: string; ltoken: string },
 ) {

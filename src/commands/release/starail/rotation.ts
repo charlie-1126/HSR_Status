@@ -15,8 +15,10 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName("로테이션")
-		.setDescription("HSR 로테이션 정보를 확인합니다."),
+		.setName("rotation")
+		.setNameLocalizations({ ko: "로테이션" })
+		.setDescription("Check HSR rotation information.")
+		.setDescriptionLocalizations({ ko: "HSR 로테이션 정보를 확인합니다." }),
 	async execute(interaction: ChatInputCommandInteraction) {
 		const timedata = await getTimeData();
 		if (timedata.error) {
@@ -36,7 +38,11 @@ export default {
 			.setDescription(formatTime(timedata))
 			.setTimestamp()
 			.setFooter({
-				text: `version ${typeof timedata.data === "string" ? timedata.data : timedata.data.gameversion}`,
+				text: `version ${
+					typeof timedata.data === "string"
+						? timedata.data
+						: timedata.data.gameversion
+				}`,
 			});
 
 		await interaction.reply({ embeds: [embed] });

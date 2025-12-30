@@ -10,6 +10,7 @@ import {
 } from "discord.js";
 import { getUserData } from "../../../services/dbHandler";
 import { getGameRecord } from "../../../utils/getGameRecord";
+import { logger } from "../../../utils/logger";
 import {
 	accountLinkUI,
 	expiredEmbed,
@@ -26,21 +27,26 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName("유저")
-		.setDescription("유저의 정보를 확인합니다.")
+		.setName("user")
+		.setNameLocalizations({ ko: "유저" })
+		.setDescription("Check user information.")
+		.setDescriptionLocalizations({ ko: "유저의 정보를 확인합니다." })
 		.addUserOption((option) =>
 			option
-				.setName("유저")
-				.setDescription("정보를 확인할 유저를 입력해주세요.")
+				.setName("user")
+				.setDescription("Enter the user to check information for.")
+				.setNameLocalizations({ ko: "유저" })
+				.setDescriptionLocalizations({
+					ko: "정보를 확인할 유저를 입력해주세요.",
+				})
 				.setRequired(false),
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
-		const user = interaction.options.getUser("유저") || interaction.user;
-
+		const user = interaction.options.getUser("user") || interaction.user;
 		// 유저 데이터 확인
 		const userData = getUserData(user.id);
 		if (!userData) {
-			if (user.id == interaction.user.id) {
+			if (user.id === interaction.user.id) {
 				const { embed, row } = await accountLinkUI(false);
 				const msg = await interaction.reply({
 					embeds: [embed],
@@ -55,7 +61,7 @@ export default {
 
 		// API 체크
 		if (!(await checkAPI(userData.uid, userData.ltuid, userData.ltoken))) {
-			if (user.id == interaction.user.id) {
+			if (user.id === interaction.user.id) {
 				const { embed, row } = await accountLinkUI(true);
 				const msg = await interaction.reply({
 					embeds: [embed],
@@ -76,6 +82,12 @@ export default {
 			userData.ltuid,
 			userData.ltoken,
 		);
+		if (!gameRecord) {
+			logger.error(
+				`게임 기록을 불러오는 데 실패했습니다. UID: ${userData.uid}`,
+			);
+			return;
+		}
 		const embed = await gameRecordEmbed(gameRecord);
 
 		const select = menuSelectUI("mainprofile", user.id, interaction.user.id);
