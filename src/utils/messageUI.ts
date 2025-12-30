@@ -6,6 +6,7 @@ import {
 	ComponentType,
 	EmbedBuilder,
 	LabelBuilder,
+	Message,
 	MessageFlags,
 	ModalBuilder,
 	StringSelectMenuBuilder,
@@ -14,6 +15,7 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import { emojis } from "../emoji/emojis";
+import * as hoyolabType from "../types/hoyolabType";
 import { emojiFromUrl } from "../utils/tools/emojiManager";
 
 interface Chest {
@@ -45,7 +47,7 @@ export async function accountLinkUI(isTokenExpired = false) {
 		);
 
 	const linkBTN = new ButtonBuilder()
-		.setCustomId(`linkaccount`)
+		.setCustomId("linkaccount")
 		.setLabel("계정 연동하기")
 		.setStyle(ButtonStyle.Primary);
 
@@ -60,18 +62,12 @@ export async function accountLinkUI(isTokenExpired = false) {
 	return { embed, row };
 }
 
-export async function gameRecordEmbed(gameRecord: any) {
-	const expeditionPromises = gameRecord.expeditions.map(
-		async (expedition: any) => {
-			const emoji = await emojiFromUrl(expedition.icon);
+export async function gameRecordEmbed(gameRecord: hoyolabType.GameRecord) {
+	const expeditionPromises = gameRecord.expeditions.map(async (expedition) => {
+		const emoji = await emojiFromUrl(expedition.icon);
 
-			return `${emoji}${
-				expedition.finish_time == null
-					? "완료됨"
-					: `<t:${expedition.finish_time.unix()}:R>`
-			}`;
-		},
-	);
+		return `${emoji}${expedition.finish_time == null ? "완료됨" : `<t:${expedition.finish_time.unix()}:R>`}`;
+	});
 
 	const expeditionTexts = await Promise.all(expeditionPromises);
 
@@ -88,7 +84,7 @@ export async function gameRecordEmbed(gameRecord: any) {
 				value: `${emojis.stamina}${gameRecord.current_stamina} / ${
 					gameRecord.max_stamina
 				} ${
-					gameRecord.current_stamina == gameRecord.max_stamina
+					gameRecord.current_stamina === gameRecord.max_stamina
 						? "(가득참)"
 						: `<t:${gameRecord.stamina_full_time.unix()}:R>`
 				}`,
@@ -127,7 +123,7 @@ export async function gameRecordEmbed(gameRecord: any) {
 	return embed;
 }
 
-export function playRecordEmbed(gameRecord: any) {
+export function playRecordEmbed(gameRecord: hoyolabType.GameRecord) {
 	const embed = new EmbedBuilder()
 		.setColor("White")
 		.setTitle(`플레이 기록 (${gameRecord.nickname})`)
@@ -200,7 +196,7 @@ export async function chestDetailEmbed(
 	});
 
 	const selectOptions = await Promise.all(selectPromises);
-	selectOptions.forEach((option) => {
+	for (const option of selectOptions) {
 		select.addOptions(
 			new StringSelectMenuOptionBuilder()
 				.setLabel(option.label)
@@ -208,7 +204,7 @@ export async function chestDetailEmbed(
 				.setDefault(option.default)
 				.setEmoji(option.emoji),
 		);
-	});
+	}
 
 	const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 		select,
@@ -217,7 +213,9 @@ export async function chestDetailEmbed(
 	return { embed, row };
 }
 
-export async function achievementDetailEmbed(achievementDetail: any) {
+export async function achievementDetailEmbed(
+	achievementDetail: hoyolabType.achievementDetail,
+) {
 	const embed = new EmbedBuilder()
 		.setColor("White")
 		.setTitle(`업적 상세 정보 (${achievementDetail.nickname})`)
@@ -241,7 +239,7 @@ export async function achievementDetailEmbed(achievementDetail: any) {
 		.setTimestamp();
 
 	const achievementPromises = achievementDetail.achievements.map(
-		async (achievement: any) => {
+		async (achievement) => {
 			const emoji = await emojiFromUrl(achievement.icon);
 			return {
 				name: `${emoji}${achievement.name}`,
@@ -252,9 +250,9 @@ export async function achievementDetailEmbed(achievementDetail: any) {
 	);
 
 	const achievementFields = await Promise.all(achievementPromises);
-	achievementFields.forEach((field) => {
+	for (const field of achievementFields) {
 		embed.addFields(field);
-	});
+	}
 
 	embed.addFields({
 		name: "총 업적 개수",
@@ -272,22 +270,22 @@ export function menuSelectUI(cur: string, subjectId: string, cid: string) {
 				.setLabel("메인 프로필")
 				.setDescription("메인 프로필을 확인합니다.")
 				.setValue("mainprofile")
-				.setDefault(cur == "mainprofile"),
+				.setDefault(cur === "mainprofile"),
 			new StringSelectMenuOptionBuilder()
 				.setLabel("플레이 기록")
 				.setDescription("플레이 기록을 확인합니다.")
 				.setValue("playrecord")
-				.setDefault(cur == "playrecord"),
+				.setDefault(cur === "playrecord"),
 			new StringSelectMenuOptionBuilder()
 				.setLabel("빛 따라 금 찾아 전적")
 				.setDescription("이상중재, 혼돈, 허구, 종말 전적을 확인합니다.")
 				.setValue("endcontentrecord")
-				.setDefault(cur == "endcontentrecord"),
+				.setDefault(cur === "endcontentrecord"),
 			new StringSelectMenuOptionBuilder()
 				.setLabel("우주 전쟁 전적")
 				.setDescription("화폐 전쟁 및 차분화 우주 전적을 확인합니다.")
 				.setValue("weeklycontentrecord")
-				.setDefault(cur == "weeklycontentrecord"),
+				.setDefault(cur === "weeklycontentrecord"),
 		)
 		.setPlaceholder("클릭하여 메뉴를 선택해주세요!");
 
@@ -309,7 +307,7 @@ export function expiredEmbed() {
 }
 
 export async function setupAccountLinkCollector(
-	msg: any,
+	msg: Message,
 	subjectId: string,
 	existingData?: { uid: string; ltuid: string; ltoken: string },
 ) {
@@ -329,7 +327,7 @@ export async function setupAccountLinkCollector(
 			await i.reply({ embeds: [embed], ephemeral: true });
 			return;
 		}
-		if (i.customId == "linkaccount") {
+		if (i.customId === "linkaccount") {
 			const modal = new ModalBuilder()
 				.setCustomId("linkaccountmodal")
 				.setTitle("계정 연동 정보 입력");
@@ -372,7 +370,7 @@ export async function setupAccountLinkCollector(
 			modal.addLabelComponents(uidLabel, ltuidLabel, ltokenLabel);
 
 			await i.showModal(modal);
-		} else if (i.customId == "linkguide") {
+		} else if (i.customId === "linkguide") {
 			await i.followUp({
 				content: "연동 가이드는 아직 구현되지 않은 기능입니다.",
 				flags: MessageFlags.Ephemeral,
@@ -380,8 +378,8 @@ export async function setupAccountLinkCollector(
 		}
 	});
 
-	collector.on("end", async (i: any, reason: string) => {
-		if (reason == "time") {
+	collector.on("end", async (i, reason: string) => {
+		if (reason === "time") {
 			const embed = new EmbedBuilder()
 				.setColor("Red")
 				.setTitle("계정 연동 시간 만료")

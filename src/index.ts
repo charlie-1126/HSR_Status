@@ -140,7 +140,7 @@ if (!fs.existsSync(dataDir)) {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			logger.error(`명령어 실행 중 오류 발생:`);
+			logger.error("명령어 실행 중 오류 발생:");
 			logger.error(error);
 
 			if (interaction.replied || interaction.deferred) {
@@ -167,6 +167,6 @@ if (!fs.existsSync(dataDir)) {
 
 // 프로세스 에러 처리
 process.on("unhandledRejection", (error) => {
-	logger.error(`처리되지 않은 Promise 거부:`);
+	logger.error("처리되지 않은 Promise 거부:");
 	logger.error(error);
 });

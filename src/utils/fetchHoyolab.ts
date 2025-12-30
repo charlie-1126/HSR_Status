@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import "dotenv/config";
 import { logger } from "./logger";
 
@@ -62,8 +62,11 @@ async function fetchActCalendar(
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -84,7 +87,10 @@ async function fetchUserInfo(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
 		return null;
 	}
 }
@@ -106,8 +112,11 @@ async function fetchGameRecord(ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -128,8 +137,11 @@ async function fetchLiveNote(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -150,8 +162,11 @@ async function fetchCharacters(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -172,8 +187,11 @@ async function fetchChests(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -194,8 +212,11 @@ async function fetchAchievement(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -216,8 +237,11 @@ async function fetchRogueTourn(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 
@@ -238,8 +262,11 @@ async function fetchGridFight(uid: string, ltuid: string, ltoken: string) {
 		});
 
 		return response.data;
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
+		return null;
 	}
 }
 

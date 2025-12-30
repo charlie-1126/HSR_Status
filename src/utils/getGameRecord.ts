@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import * as hoyolabType from "../types/hoyolabType";
 import {
 	fetchAchievement,
 	fetchActCalendar,
@@ -15,144 +16,28 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-interface challengeRecord {
-	peak: {
-		current_progress: number;
-		total_progress: number;
-		rank_icon: string;
-		rank_icon_type: string;
-	} | null;
-	boss: { current_progress: number; total_progress: number } | null;
-	story: { current_progress: number; total_progress: number } | null;
-	chaos: { current_progress: number; total_progress: number } | null;
-}
-
-interface Rank {
-	is_unlocked: boolean;
-	pos: number;
-	icon: string;
-}
-interface Property {
-	property_type: number;
-	base: number;
-	add: number;
-	final: number;
-}
-interface Skill {
-	remake: string;
-	pointType: number;
-	icon: string;
-	level: number;
-	anchor: number;
-	is_activated: boolean;
-}
-
-interface Relic {
-	icon: string;
-	level: number;
-	rarity: number;
-	pos: number;
-	main_property: { property_type: number; value: string };
-	properties: { property_type: number; times: number; value: string }[];
-}
-
-interface Character {
-	name: string;
-	image: string;
-	icon: string;
-	level: number;
-	element: number;
-	base_type: number;
-	ranks: Rank[];
-	equip: {
-		name: string;
-		rank: number;
-		level: number;
-		icon: string;
-		rarity: number;
-	} | null;
-	properties: Property[];
-	skills: Skill[];
-	relics: Relic[];
-	ornaments: Relic[];
-}
-
-export interface GameRecord {
-	nickname: string;
-	level: number;
-	region: string;
-	profile_icon: string;
-	profile_frame: string;
-	active_days: number;
-	avatar_num: number;
-	achievement_num: number;
-	chest_num: number;
-	season_title: string;
-	abyss_process: string;
-	phone_background_image: string;
-	current_stamina: number;
-	max_stamina: number;
-	current_reserve_stamina: number;
-	is_reserve_stamina_full: boolean;
-	current_train_score: number;
-	max_train_score: number;
-	current_time: dayjs.Dayjs;
-	stamina_full_time: dayjs.Dayjs;
-	grid_fight_weekly_cur: number;
-	grid_fight_weekly_max: number;
-	current_rogue_score: number;
-	max_rogue_score: number;
-	expeditions: {
-		name: string;
-		icon: string;
-		status: string;
-		remaining_time: number;
-		finish_time: dayjs.Dayjs | null;
-	}[];
-	accepted_expedition_num: number;
-	total_expedition_num: number;
-	weekly_cocoon_cnt: number;
-	weekly_cocoon_limit: number;
-}
-
-interface Chest {
-	name: string;
-	cur: number;
-	max: number;
-	icon: string;
-	map_detail: {
-		name: string;
-		cur: number;
-		max: number;
-	}[];
-}
-
-interface ChestDetail {
-	nickname: string;
-	chest_num: number;
-	chests: Chest[];
-}
-
 async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
-    const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
-    const gameRecord = await fetchGameRecord(ltuid, ltoken);
-    const liveNote = await fetchLiveNote(uid, ltuid, ltoken);
+	const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
+	const gameRecord = await fetchGameRecord(ltuid, ltoken);
+	const liveNote = await fetchLiveNote(uid, ltuid, ltoken);
 
-    if (
-        !userInfo ||
-        userInfo.retcode !== 0 ||
-        !userInfo.data ||
-        !gameRecord ||
-        gameRecord.retcode !== 0 ||
-        !gameRecord.data ||
-        !liveNote ||
-        liveNote.retcode !== 0 ||
-        !liveNote.data
-    ) {
-        return null;
-    }
+	if (
+		!userInfo ||
+		userInfo.retcode !== 0 ||
+		!userInfo.data ||
+		!gameRecord ||
+		gameRecord.retcode !== 0 ||
+		!gameRecord.data ||
+		!liveNote ||
+		liveNote.retcode !== 0 ||
+		!liveNote.data
+	) {
+		return null;
+	}
 
-    const hsrGameRecord = gameRecord.data.list.find((game: any) => game.game_id == 6);
+	const hsrGameRecord = gameRecord.data.list.find(
+		(game: unknown) => (game as { game_id: number }).game_id === 6,
+	);
 
 	const processedUserData = {
 		nickname: hsrGameRecord.nickname,
@@ -178,14 +63,14 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
 		grid_fight_weekly_max: liveNote.data.grid_fight_weekly_max,
 		current_rogue_score: liveNote.data.current_rogue_score,
 		max_rogue_score: liveNote.data.max_rogue_score,
-		expeditions: liveNote.data.expeditions.map((expedition: any) => {
+		expeditions: liveNote.data.expeditions.map((expedition: hoyolabType.RowExpedition) => {
 			return {
 				name: expedition.name,
 				icon: expedition.item_url,
 				status: expedition.status,
 				remaining_time: expedition.remaining_time,
 				finish_time:
-					expedition.remaining_time != 0
+					expedition.remaining_time !== 0
 						? dayjs(expedition.finish_ts * 1000).tz()
 						: null,
 			};
@@ -195,7 +80,7 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
 		weekly_cocoon_cnt: liveNote.data.weekly_cocoon_cnt,
 		weekly_cocoon_limit: liveNote.data.weekly_cocoon_limit,
 		chest_num: userInfo.data.stats.chest_num,
-	} as GameRecord;
+	} as hoyolabType.GameRecord;
 
 	return processedUserData;
 }
@@ -219,19 +104,19 @@ async function getChestDetail(uid: string, ltuid: string, ltoken: string) {
 	}
 
 	const hsrGameRecord = gameRecord.data.list.find(
-		(game: any) => game.game_id == 6,
+		(game: unknown) => (game as { game_id: number }).game_id === 6,
 	);
 
 	return {
 		nickname: hsrGameRecord.nickname,
 		chest_num: userInfo.data.stats.chest_num,
-		chests: chests_data.data.world_list.map((world: any) => {
+		chests: chests_data.data.world_list.map((world: hoyolabType.World) => {
 			return {
 				name: world.name,
 				cur: world.world_cur,
 				max: world.world_max,
 				icon: world.icon,
-				map_detail: world.map_entrances.map((map: any) => {
+				map_detail: world.map_entrances.map((map) => {
 					return {
 						name: map.name,
 						cur: map.cur_chest,
@@ -240,7 +125,7 @@ async function getChestDetail(uid: string, ltuid: string, ltoken: string) {
 				}),
 			};
 		}),
-	} as ChestDetail;
+	} as hoyolabType.ChestDetail;
 }
 
 async function getAchievementDetail(
@@ -266,7 +151,7 @@ async function getAchievementDetail(
 	}
 
 	const hsrGameRecord = gameRecord.data.list.find(
-		(game: any) => game.game_id == 6,
+		(game: unknown) => (game as { game_id: number }).game_id === 6,
 	);
 	return {
 		nickname: hsrGameRecord.nickname,
@@ -274,7 +159,7 @@ async function getAchievementDetail(
 		gold_num: achievement_data.data.gold_num,
 		silver_num: achievement_data.data.silver_num,
 		copper_num: achievement_data.data.copper_num,
-		achievements: achievement_data.data.list.map((achieve: any) => {
+		achievements: achievement_data.data.list.map((achieve: hoyolabType.RowAchievement) => {
 			return {
 				name: achieve.name,
 				icon: achieve.icon,
@@ -282,7 +167,7 @@ async function getAchievementDetail(
 				max: achieve.max,
 			};
 		}),
-	};
+	} as hoyolabType.achievementDetail;
 }
 
 async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
@@ -293,8 +178,8 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 		return null;
 	}
 
-	const characters = characters_data.map((char: any) => {
-		const skills = char.skills.map((skill: any) => {
+	const characters = characters_data.map((char: hoyolabType.RowCharacter) => {
+		const skills = char.skills.map((skill) => {
 			return {
 				remake: skill.remake,
 				pointType: skill.point_type,
@@ -305,17 +190,16 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 			};
 		});
 		if (char.servant_detail) {
-			const servant_skills = char.servant_detail.servant_skills.map(
-				(skill: any) => {
-					return {
-						remake: skill.remake,
-						icon: skill.item_url,
-						level: skill.level,
-						anchor: Number(skill.anchor.replace("Point", "")),
-						is_activated: skill.is_activated,
-					};
-				},
-			);
+			const servant_skills = char.servant_detail.servant_skills.map((skill) => {
+				return {
+					remake: skill.remake,
+					pointType: skill.point_type,
+					icon: skill.item_url,
+					level: skill.level,
+					anchor: Number(skill.anchor.replace("Point", "")),
+					is_activated: skill.is_activated,
+				};
+			});
 			skills.push(...servant_skills);
 		}
 		return {
@@ -325,7 +209,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 			level: char.level,
 			element: char.element_id,
 			base_type: char.base_type,
-			ranks: char.ranks.map((rank: Rank) => {
+			ranks: char.ranks.map((rank) => {
 				return {
 					is_unlocked: rank.is_unlocked,
 					pos: rank.pos,
@@ -339,9 +223,9 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 						level: char.equip.level,
 						icon: char.equip.icon,
 						rarity: char.equip.rarity,
-					}
+				  }
 				: null,
-			properties: char.properties.map((prop: any) => {
+			properties: char.properties.map((prop) => {
 				return {
 					property_type: prop.property_type,
 					base: Number(prop.base),
@@ -350,7 +234,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 				};
 			}),
 			skills: skills,
-			relics: char.relics.map((relic: any) => {
+			relics: char.relics.map((relic) => {
 				return {
 					icon: relic.icon,
 					level: relic.level,
@@ -360,7 +244,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 						property_type: relic.main_property.property_type,
 						value: relic.main_property.value,
 					},
-					properties: relic.properties.map((prop: any) => {
+					properties: relic.properties.map((prop) => {
 						return {
 							property_type: prop.property_type,
 							times: prop.times - 1,
@@ -369,7 +253,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 					}),
 				};
 			}),
-			ornaments: char.ornaments.map((ornament: any) => {
+			ornaments: char.ornaments.map((ornament) => {
 				return {
 					icon: ornament.icon,
 					level: ornament.level,
@@ -379,7 +263,7 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 						property_type: ornament.main_property.property_type,
 						value: ornament.main_property.value,
 					},
-					properties: ornament.properties.map((prop: any) => {
+					properties: ornament.properties.map((prop) => {
 						return {
 							property_type: prop.property_type,
 							times: prop.times - 1,
@@ -388,59 +272,72 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 					}),
 				};
 			}),
-		} as Character;
+		} as hoyolabType.Character;
 	});
-	return characters as Character[];
+	return characters as hoyolabType.Character[];
 }
 
 async function getEndContentRecord(uid: string, ltuid: string, ltoken: string) {
-    const actCalendar = await fetchActCalendar(uid, ltuid, ltoken);
-    const gameRecord = await fetchGameRecord(ltuid, ltoken);
-    if (
-        !actCalendar ||
-        actCalendar.retcode !== 0 ||
-        !actCalendar.data ||
-        !gameRecord ||
-        gameRecord.retcode !== 0 ||
-        !gameRecord.data
-    ) {
-        return null;
-    }
+	const actCalendar = await fetchActCalendar(uid, ltuid, ltoken);
+	const gameRecord = await fetchGameRecord(ltuid, ltoken);
+	if (
+		!actCalendar ||
+		actCalendar.retcode !== 0 ||
+		!actCalendar.data ||
+		!gameRecord ||
+		gameRecord.retcode !== 0 ||
+		!gameRecord.data
+	) {
+		return null;
+	}
 
-    const hsrGameRecord = gameRecord.data.list.find((game: any) => game.game_id == 6);
-    const challenge_list = actCalendar.data.challenge_list || [];
-    const challengeRecord: challengeRecord = { peak: null, boss: null, story: null, chaos: null };
-    challenge_list.forEach((challenge: any) => {
-        if (challenge.status == "challengeStatusUnopened") return;
-        if (challenge.challenge_type == "ChallengeTypePeak") {
-            challengeRecord.peak = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-                rank_icon: challenge.challenge_peak_rank_icon,
-                rank_icon_type: challenge.challenge_peak_rank_icon_type,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeBoss") {
-            challengeRecord.boss = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeStory") {
-            challengeRecord.story = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        } else if (challenge.challenge_type == "ChallengeTypeChasm") {
-            challengeRecord.chaos = {
-                current_progress: challenge.current_progress,
-                total_progress: challenge.total_progress,
-            };
-        }
-    });
+	const hsrGameRecord = gameRecord.data.list.find(
+		(game: unknown) => (game as { game_id: number }).game_id === 6,
+	);
+	const challenge_list = actCalendar.data.challenge_list || [];
+	const challengeRecord: hoyolabType.challengeRecord = {
+		peak: null,
+		boss: null,
+		story: null,
+		chaos: null,
+	};
+	for (const challenge of challenge_list) {
+		if (challenge.status === "challengeStatusUnopened") continue;
+		if (challenge.challenge_type === "ChallengeTypePeak") {
+			challengeRecord.peak = {
+				current_progress: challenge.current_progress,
+				total_progress: challenge.total_progress,
+				rank_icon: challenge.challenge_peak_rank_icon,
+				rank_icon_type: challenge.challenge_peak_rank_icon_type,
+			};
+		} else if (challenge.challenge_type === "ChallengeTypeBoss") {
+			challengeRecord.boss = {
+				current_progress: challenge.current_progress,
+				total_progress: challenge.total_progress,
+			};
+		} else if (challenge.challenge_type === "ChallengeTypeStory") {
+			challengeRecord.story = {
+				current_progress: challenge.current_progress,
+				total_progress: challenge.total_progress,
+			};
+		} else if (challenge.challenge_type === "ChallengeTypeChasm") {
+			challengeRecord.chaos = {
+				current_progress: challenge.current_progress,
+				total_progress: challenge.total_progress,
+			};
+		}
+	}
 
-    return {
-        nickname: hsrGameRecord.nickname,
-        challengeRecord: challengeRecord,
-    };
+	return {
+		nickname: hsrGameRecord.nickname,
+		challengeRecord: challengeRecord,
+	};
 }
 
-export { getGameRecord, getChestDetail, getCharacterList, getAchievementDetail, getEndContentRecord };
+export {
+	getGameRecord,
+	getChestDetail,
+	getCharacterList,
+	getAchievementDetail,
+	getEndContentRecord,
+};
