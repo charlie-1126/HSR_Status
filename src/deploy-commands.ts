@@ -1,6 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { REST, Routes } from "discord.js";
+import {
+	REST,
+	type RESTPostAPIApplicationCommandsJSONBody,
+	Routes,
+} from "discord.js";
 import "dotenv/config";
 import { logger } from "./utils/logger";
 import { CLIENT_ID, TOKEN } from "./utils/tools/environmentManager";
@@ -8,8 +12,8 @@ import { CLIENT_ID, TOKEN } from "./utils/tools/environmentManager";
 const client_id = CLIENT_ID;
 
 export async function deployCommands() {
-	const releaseCommands: any[] = [];
-	const testCommands: any[] = [];
+	const releaseCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
+	const testCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
 	// release
 	const releasePath = path.join(__dirname, "commands", "release");
@@ -94,7 +98,7 @@ export async function deployCommands() {
 
 		return true;
 	} catch (error) {
-		logger.error(`명령어 등록 중 오류 발생:`);
+		logger.error("명령어 등록 중 오류 발생:");
 		logger.error(error);
 		return false;
 	}

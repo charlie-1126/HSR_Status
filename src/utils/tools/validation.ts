@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getUserData } from "../../services/dbHandler";
 import { logger } from "../logger";
 
@@ -60,8 +60,10 @@ export async function checkAPI(uid: string, ltuid: string, ltoken: string) {
 		} else {
 			return false;
 		}
-	} catch (err: any) {
-		logger.error("API 요청 오류:", err.response?.data || err);
+	} catch (err: unknown) {
+		if (err instanceof AxiosError) {
+			logger.error("API 요청 오류:", err.response?.data || err);
+		}
 		return false;
 	}
 }

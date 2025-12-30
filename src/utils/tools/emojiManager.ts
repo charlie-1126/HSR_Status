@@ -13,6 +13,10 @@ const EMOJI_DIR = path.join(__dirname, "../..", "emoji");
 const EMOJI_URL_DIR = path.join(EMOJI_DIR, "url");
 
 async function registerEmojis() {
+	if (!TOKEN || !CLIENT_ID) {
+		logger.error("TOKEN or CLIENT_ID is not defined.");
+		return;
+	}
 	const rest = new REST().setToken(TOKEN);
 	const uploadedEmojis = (await rest.get(
 		`/applications/${CLIENT_ID}/emojis`,
@@ -37,7 +41,7 @@ async function registerEmojis() {
 		const urlEmojiNames = urlEmojis.map((v) => v.split(".")[0]);
 		const allEmojiNames = [...emojiNames, ...urlEmojiNames];
 
-		if (!allEmojiNames.includes(emoji.name + "")) {
+		if (!allEmojiNames.includes(`${emoji.name}`)) {
 			await rest.delete(`/applications/${CLIENT_ID}/emojis/${emoji.id}`);
 			logger.info(`emojiManager: Deleted ${emoji.name} emoji`);
 		}
@@ -126,6 +130,10 @@ async function downloadImage(url: string, filepath: string): Promise<void> {
 }
 
 async function emojiFromUrl(url: string): Promise<string> {
+	if (!TOKEN || !CLIENT_ID) {
+		logger.error("TOKEN or CLIENT_ID is not defined.");
+		throw new Error("TOKEN or CLIENT_ID is not defined.");
+	}
 	const rest = new REST().setToken(TOKEN);
 
 	// emoji/url 폴더가 없으면 생성

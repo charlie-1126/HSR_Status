@@ -43,7 +43,7 @@ export async function updateRotationData(client?: Client) {
 			passEndTime: timedata.data.passEndTime
 				? timedata.data.passEndTime.unix()
 				: null,
-			warpTime: timedata.data.warpTime.map((w: any) => ({
+			warpTime: timedata.data.warpTime.map((w) => ({
 				id: w.id,
 				gameversion: w.gameversion,
 				startTime: w.startTime.unix(),

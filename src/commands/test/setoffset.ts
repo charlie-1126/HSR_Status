@@ -25,7 +25,6 @@ export default {
 				.setRequired(true)
 				.addChoices(
 					{ name: "화폐전쟁 시작 날짜", value: "battlestart" },
-					{ name: "이번 버전 업데이트 날짜", value: "versionupdate" },
 					{ name: "다음 버전 업데이트 날짜", value: "nextversionupdate" },
 					{ name: "다다음 버전 업데이트 날짜", value: "nextnextversionupdate" },
 					{ name: "공훈 종료 시간", value: "passendtime" },
@@ -41,7 +40,7 @@ export default {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const item = interaction.options.getString("item", true);
 		const dateString = interaction.options.getString("date", true);
-		if (interaction.user.id != process.env.DEVELOPER_ID) {
+		if (interaction.user.id !== process.env.DEVELOPER_ID) {
 			await interaction.reply({
 				content: "이 명령어는 개발자 전용 명령어입니다.",
 				flags: MessageFlags.Ephemeral,
@@ -62,7 +61,6 @@ export default {
 		try {
 			const itemMap: Record<string, string> = {
 				battlestart: "battleStart",
-				versionupdate: "versionUpdate",
 				nextversionupdate: "nextversionUpdate",
 				nextnextversionupdate: "nextnextversionUpdate",
 				passendtime: "passEndTime",
@@ -78,7 +76,6 @@ export default {
 
 			const itemNameMap: Record<string, string> = {
 				battlestart: "화폐전쟁 시작 날짜",
-				versionupdate: "이번 버전 업데이트 날짜",
 				nextversionupdate: "다음 버전 업데이트 날짜",
 				nextnextversionupdate: "다다음 버전 업데이트 날짜",
 				passendtime: "공훈 종료 시간",
@@ -86,7 +83,9 @@ export default {
 			};
 
 			await interaction.reply({
-				content: `✅ ${itemNameMap[item]}을(를) ${parsedDate.format("YYYY-MM-DD HH:mm:ss")}로 설정했습니다.`,
+				content: `✅ ${itemNameMap[item]}을(를) ${parsedDate.format(
+					"YYYY-MM-DD HH:mm:ss",
+				)}로 설정했습니다.`,
 				flags: MessageFlags.Ephemeral,
 			});
 		} catch (error) {

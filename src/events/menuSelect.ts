@@ -9,20 +9,14 @@ import {
 	type StringSelectMenuBuilder,
 	type StringSelectMenuInteraction,
 } from "discord.js";
-import path from "path";
-import {
-    getChestDetail,
-    getGameRecord,
-    getCharacterList,
-    getAchievementDetail,
-    getEndContentRecord,
-} from "../utils/getGameRecord";
 import { getUserData } from "../services/dbHandler";
 import {
 	getAchievementDetail,
 	getChestDetail,
+	getEndContentRecord,
 	getGameRecord,
 } from "../utils/getGameRecord";
+import { logger } from "../utils/logger";
 import {
 	accountLinkUI,
 	achievementDetailEmbed,
@@ -51,7 +45,7 @@ export default {
 		const subjectId = interaction.customId.split(":")[1];
 		const cid = interaction.customId.split(":")[2];
 
-		if (interaction.user.id != cid) {
+		if (interaction.user.id !== cid) {
 			const embed = new EmbedBuilder()
 				.setColor("Red")
 				.setTitle("권한 없음")
@@ -74,7 +68,7 @@ export default {
 		const userData = getUserData(subjectId);
 		if (!userData) {
 			await interaction.deferUpdate();
-			if (subjectId == cid) {
+			if (subjectId === cid) {
 				const { embed, row } = await accountLinkUI(false);
 				const msg = await original_message.edit({
 					embeds: [embed],
@@ -95,7 +89,7 @@ export default {
 		// API 체크
 		if (!(await checkAPI(userData.uid, userData.ltuid, userData.ltoken))) {
 			await interaction.deferUpdate();
-			if (subjectId == cid) {
+			if (subjectId === cid) {
 				const { embed, row } = await accountLinkUI(true);
 				const msg = await original_message.edit({
 					embeds: [embed],
@@ -114,13 +108,19 @@ export default {
 		}
 
 		await interaction.deferUpdate();
-		if (selectedValue == "mainprofile") {
+		if (selectedValue === "mainprofile") {
 			// 게임 기록 임베드 생성
 			const gameRecord = await getGameRecord(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,
 			);
+			if (!gameRecord) {
+				logger.error(
+					`게임 기록을 불러오는 데 실패했습니다. UID: ${userData.uid}`,
+				);
+				return;
+			}
 			const embed = await gameRecordEmbed(gameRecord);
 
 			const select = menuSelectUI("mainprofile", subjectId, cid);
@@ -135,7 +135,7 @@ export default {
 				embeds: [embed],
 				components: [row],
 			});
-		} else if (selectedValue == "playrecord") {
+		} else if (selectedValue === "playrecord") {
 			const gameRecord = await getGameRecord(
 				userData.uid,
 				userData.ltuid,
@@ -162,46 +162,64 @@ export default {
 				select,
 			);
 
-            await original_message.edit({ embeds: [embed], components: [row, buttonRow], files: [] });
-        } else if (selectedValue == "endcontentrecord") {
-            // 빛 따라 금 찾아 전적
-            const challengeRecord = await getEndContentRecord(userData.uid, userData.ltuid, userData.ltoken);
-            if (!challengeRecord) return;
-            const select = menuSelectUI("endcontentrecord", subjectId, cid);
-            const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(select);
-            const embed = new EmbedBuilder()
-                .setColor("White")
-                .setTitle(`빛 따라 금 찾아 전적 (${challengeRecord.nickname})`)
-                .setDescription(
-                    `- 이상중재 전적: ${
-                        challengeRecord.challengeRecord.peak
-                            ? `${challengeRecord.challengeRecord.peak.current_progress} / ${challengeRecord.challengeRecord.peak.total_progress}`
-                            : `미오픈`
-                    }\n- 혼돈의 기억 전적: ${
-                        challengeRecord.challengeRecord.chaos
-                            ? `${challengeRecord.challengeRecord.chaos.current_progress} / ${challengeRecord.challengeRecord.chaos.total_progress}`
-                            : `미오픈`
-                    }\n- 허구 이야기 전적: ${
-                        challengeRecord.challengeRecord.story
-                            ? `${challengeRecord.challengeRecord.story.current_progress} / ${challengeRecord.challengeRecord.story.total_progress}`
-                            : `미오픈`
-                    }\n- 종말의 환영 전적: ${
-                        challengeRecord.challengeRecord.boss
-                            ? `${challengeRecord.challengeRecord.boss.current_progress} / ${challengeRecord.challengeRecord.boss.total_progress}`
-                            : `미오픈`
-                    }`
-                )
-                .setTimestamp();
-            await original_message.edit({ embeds: [embed], components: [row], files: [] });
-        } else if (selectedValue == "weeklycontentrecord") {
-            // 우주 전쟁 전적
-        } else if (selectedValue == "chestDetail") {
-            const selectedIndex =
-                interaction.isStringSelectMenu() && customIdPrefix === "chestDetail"
-                    ? parseInt(interaction.values[0])
-                    : 0;
-            const chestDetail = await getChestDetail(userData.uid, userData.ltuid, userData.ltoken);
-            if (!chestDetail) return;
+			await original_message.edit({
+				embeds: [embed],
+				components: [row, buttonRow],
+				files: [],
+			});
+		} else if (selectedValue === "endcontentrecord") {
+			// 빛 따라 금 찾아 전적
+			const challengeRecord = await getEndContentRecord(
+				userData.uid,
+				userData.ltuid,
+				userData.ltoken,
+			);
+			if (!challengeRecord) return;
+			const select = menuSelectUI("endcontentrecord", subjectId, cid);
+			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+				select,
+			);
+			const embed = new EmbedBuilder()
+				.setColor("White")
+				.setTitle(`빛 따라 금 찾아 전적 (${challengeRecord.nickname})`)
+				.setDescription(
+					`- 이상중재 전적: ${
+						challengeRecord.challengeRecord.peak
+							? `${challengeRecord.challengeRecord.peak.current_progress} / ${challengeRecord.challengeRecord.peak.total_progress}`
+							: "미오픈"
+					}\n- 혼돈의 기억 전적: ${
+						challengeRecord.challengeRecord.chaos
+							? `${challengeRecord.challengeRecord.chaos.current_progress} / ${challengeRecord.challengeRecord.chaos.total_progress}`
+							: "미오픈"
+					}\n- 허구 이야기 전적: ${
+						challengeRecord.challengeRecord.story
+							? `${challengeRecord.challengeRecord.story.current_progress} / ${challengeRecord.challengeRecord.story.total_progress}`
+							: "미오픈"
+					}\n- 종말의 환영 전적: ${
+						challengeRecord.challengeRecord.boss
+							? `${challengeRecord.challengeRecord.boss.current_progress} / ${challengeRecord.challengeRecord.boss.total_progress}`
+							: "미오픈"
+					}`,
+				)
+				.setTimestamp();
+			await original_message.edit({
+				embeds: [embed],
+				components: [row],
+				files: [],
+			});
+		} else if (selectedValue === "weeklycontentrecord") {
+			// 우주 전쟁 전적
+		} else if (selectedValue === "chestDetail") {
+			const selectedIndex =
+				interaction.isStringSelectMenu() && customIdPrefix === "chestDetail"
+					? Number(interaction.values[0])
+					: 0;
+			const chestDetail = await getChestDetail(
+				userData.uid,
+				userData.ltuid,
+				userData.ltoken,
+			);
+			if (!chestDetail) return;
 
 			const { embed, row } = await chestDetailEmbed(
 				chestDetail,
@@ -221,7 +239,7 @@ export default {
 				components: [row, buttonRow],
 				files: [],
 			});
-		} else if (selectedValue == "achievementDetail") {
+		} else if (selectedValue === "achievementDetail") {
 			const achievement_detail = await getAchievementDetail(
 				userData.uid,
 				userData.ltuid,

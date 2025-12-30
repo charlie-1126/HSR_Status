@@ -20,7 +20,7 @@ function setupdateMessage(
 	MessageId: string,
 ): void {
 	const existing = updateMessage_db
-		.prepare(`SELECT 1 FROM updateMessage WHERE guildId = ?`)
+		.prepare("SELECT 1 FROM updateMessage WHERE guildId = ?")
 		.get(guildId);
 	if (existing) {
 		updateMessage_db
@@ -64,12 +64,12 @@ function saveUserData(
 	uid: string,
 	ltuid: string,
 	ltoken: string,
-	publicStatus: boolean = false,
+	publicStatus = false,
 ): void {
 	const encryptedLtoken = encrypt(ltoken);
 	const savedLtoken = `${encryptedLtoken.iv}:${encryptedLtoken.authTag}:${encryptedLtoken.content}`;
 	const existing = userData_db
-		.prepare(`SELECT 1 FROM userData WHERE userId = ?`)
+		.prepare("SELECT 1 FROM userData WHERE userId = ?")
 		.get(userId);
 	if (existing) {
 		userData_db
@@ -80,7 +80,7 @@ function saveUserData(
             WHERE userId = ?
         `,
 			)
-			.run(uid, ltuid, savedLtoken, publicStatus == true ? 1 : 0, userId);
+			.run(uid, ltuid, savedLtoken, publicStatus === true ? 1 : 0, userId);
 	} else {
 		userData_db
 			.prepare(
@@ -89,15 +89,12 @@ function saveUserData(
             VALUES (?, ?, ?, ?, ?)
         `,
 			)
-			.run(userId, uid, ltuid, savedLtoken, publicStatus == true ? 1 : 0);
+			.run(userId, uid, ltuid, savedLtoken, publicStatus === true ? 1 : 0);
 	}
 }
 
 // 사용자 공개 설정 변경
-function setUserPublicStatus(
-	userId: string,
-	publicStatus: boolean = false,
-): void {
+function setUserPublicStatus(userId: string, publicStatus = false): void {
 	userData_db
 		.prepare(
 			`
@@ -106,7 +103,7 @@ function setUserPublicStatus(
         WHERE userId = ?
     `,
 		)
-		.run(publicStatus == true ? 1 : 0, userId);
+		.run(publicStatus === true ? 1 : 0, userId);
 }
 
 // 사용자 정보 조회

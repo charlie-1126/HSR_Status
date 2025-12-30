@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import * as hoyolabType from "../types/hoyolabType";
+import type * as hoyolabType from "../types/hoyolabType";
 import {
 	fetchAchievement,
 	fetchActCalendar,

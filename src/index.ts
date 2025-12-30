@@ -12,7 +12,7 @@ import "dotenv/config";
 import { deployCommands } from "./deploy-commands";
 import { logger } from "./utils/logger";
 import { registerEmojis } from "./utils/tools/emojiManager";
-import { CLIENT_ID, TOKEN } from "./utils/tools/environmentManager";
+import { TOKEN } from "./utils/tools/environmentManager";
 
 // 데이터 폴더 생성
 const dataDir = path.join(__dirname, "../data");

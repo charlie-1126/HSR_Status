@@ -5,9 +5,9 @@ import {
 	ButtonStyle,
 	ComponentType,
 	EmbedBuilder,
-	InteractionResponse,
+	type InteractionResponse,
 	LabelBuilder,
-	Message,
+	type Message,
 	MessageFlags,
 	ModalBuilder,
 	StringSelectMenuBuilder,
@@ -16,7 +16,7 @@ import {
 	TextInputStyle,
 } from "discord.js";
 import { emojis } from "../emoji/emojis";
-import * as hoyolabType from "../types/hoyolabType";
+import type * as hoyolabType from "../types/hoyolabType";
 import { emojiFromUrl } from "../utils/tools/emojiManager";
 
 export async function accountLinkUI(isTokenExpired = false) {
@@ -361,7 +361,7 @@ export async function setupAccountLinkCollector(
 		}
 	});
 
-	collector.on("end", async (i, reason: string) => {
+	collector.on("end", async (_, reason: string) => {
 		if (reason === "time") {
 			const embed = new EmbedBuilder()
 				.setColor("Red")

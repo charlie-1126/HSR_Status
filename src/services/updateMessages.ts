@@ -3,6 +3,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import {
 	type Client,
+	DiscordAPIError,
 	EmbedBuilder,
 	type Message,
 	TextChannel,
@@ -44,7 +45,11 @@ export async function updateAllMessages(client: Client) {
 			.setDescription(formatTime(timedata))
 			.setTimestamp()
 			.setFooter({
-				text: `version ${typeof timedata.data === "string" ? timedata.data : timedata.data.gameversion}`,
+				text: `version ${
+					typeof timedata.data === "string"
+						? timedata.data
+						: timedata.data.gameversion
+				}`,
 			});
 
 		let updatedCount = 0;
@@ -82,40 +87,44 @@ export async function updateAllMessages(client: Client) {
 				let message: Message | null = null;
 				try {
 					message = await channel.messages.fetch(msgData.MessageId);
-				} catch (error: any) {
+				} catch (error: unknown) {
 					// 메시지가 삭제된 경우
-					if (error.code === 10008) {
-						try {
-							// Unknown Message
-							logger.info(
-								`updateAllMessages: 메시지를 찾을 수 없음: ${msgData.MessageId} - 새로 생성`,
-							);
-
-							// 새 메시지 생성
-							const newMessage = await channel.send({ embeds: [embed] });
-
-							// DB 업데이트
-							setupdateMessage(
-								msgData.guildId,
-								msgData.channelId,
-								newMessage.id,
-							);
-							recreatedCount++;
-							continue;
-						} catch (error: any) {
-							if (error.code === 50013 || error.code === 50001) {
-								logger.error(
-									`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 생성 실패`,
+					if (error instanceof DiscordAPIError) {
+						if (error.code === 10008) {
+							try {
+								// Unknown Message
+								logger.info(
+									`updateAllMessages: 메시지를 찾을 수 없음: ${msgData.MessageId} - 새로 생성`,
 								);
-								deleteUpdateMessage(msgData.guildId);
-								deletedCount++;
+
+								// 새 메시지 생성
+								const newMessage = await channel.send({ embeds: [embed] });
+
+								// DB 업데이트
+								setupdateMessage(
+									msgData.guildId,
+									msgData.channelId,
+									newMessage.id,
+								);
+								recreatedCount++;
 								continue;
-							} else {
-								throw error;
+							} catch (error: unknown) {
+								if (error instanceof DiscordAPIError) {
+									if (error.code === 50013 || error.code === 50001) {
+										logger.error(
+											`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 생성 실패`,
+										);
+										deleteUpdateMessage(msgData.guildId);
+										deletedCount++;
+										continue;
+									} else {
+										throw error;
+									}
+								}
 							}
+						} else {
+							throw error;
 						}
-					} else {
-						throw error;
 					}
 				}
 
@@ -124,16 +133,18 @@ export async function updateAllMessages(client: Client) {
 					try {
 						await message.edit({ embeds: [embed] });
 						updatedCount++;
-					} catch (error: any) {
-						if (error.code === 50013 || error.code === 50001) {
-							logger.error(
-								`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 수정 실패`,
-								error,
-							);
-							deleteUpdateMessage(msgData.guildId);
-							deletedCount++;
-						} else {
-							throw error;
+					} catch (error: unknown) {
+						if (error instanceof DiscordAPIError) {
+							if (error.code === 50013 || error.code === 50001) {
+								logger.error(
+									`updateAllMessages: 권한 없음: ${msgData.channelId} - 메시지 수정 실패`,
+								);
+								logger.error(error);
+								deleteUpdateMessage(msgData.guildId);
+								deletedCount++;
+							} else {
+								throw error;
+							}
 						}
 					}
 				}
@@ -149,7 +160,7 @@ export async function updateAllMessages(client: Client) {
 			`updateAllMessages: 완료 - 업데이트: ${updatedCount}, 재생성: ${recreatedCount}, 삭제: ${deletedCount}`,
 		);
 	} catch (error) {
-		logger.error(`updateAllMessages: 오류 발생`);
+		logger.error("updateAllMessages: 오류 발생");
 		logger.error(error);
 	}
 }
