@@ -10,12 +10,7 @@ import {
 	type StringSelectMenuInteraction,
 } from "discord.js";
 import { getUserData } from "../services/dbHandler";
-import {
-	getAchievementDetail,
-	getChestDetail,
-	getEndContentRecord,
-	getGameRecord,
-} from "../utils/getGameRecord";
+import * as getHoyolabData from "../utils/getHoyolabData";
 import { logger } from "../utils/logger";
 import {
 	accountLinkUI,
@@ -113,7 +108,7 @@ export default {
 		await interaction.deferUpdate();
 		if (selectedValue === "mainprofile") {
 			// 게임 기록 임베드 생성
-			const gameRecord = await getGameRecord(
+			const gameRecord = await getHoyolabData.getGameRecord(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,
@@ -139,7 +134,7 @@ export default {
 				components: [row],
 			});
 		} else if (selectedValue === "playrecord") {
-			const gameRecord = await getGameRecord(
+			const gameRecord = await getHoyolabData.getGameRecord(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,
@@ -172,7 +167,7 @@ export default {
 			});
 		} else if (selectedValue === "endcontentrecord") {
 			// 빛 따라 금 찾아 전적
-			const challengeRecord = await getEndContentRecord(
+			const challengeRecord = await getHoyolabData.getEndContentRecord(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,
@@ -203,7 +198,7 @@ export default {
 				interaction.isStringSelectMenu() && customIdPrefix === "chestDetail"
 					? Number(interaction.values[0])
 					: 0;
-			const chestDetail = await getChestDetail(
+			const chestDetail = await getHoyolabData.getChestDetail(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,
@@ -229,7 +224,7 @@ export default {
 				files: [],
 			});
 		} else if (selectedValue === "achievementDetail") {
-			const achievement_detail = await getAchievementDetail(
+			const achievement_detail = await getHoyolabData.getAchievementDetail(
 				userData.uid,
 				userData.ltuid,
 				userData.ltoken,

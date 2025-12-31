@@ -9,7 +9,7 @@ import {
 	type StringSelectMenuBuilder,
 } from "discord.js";
 import { getUserData } from "../../../services/dbHandler";
-import { getGameRecord } from "../../../utils/getGameRecord";
+import { getGameRecord } from "../../../utils/getHoyolabData";
 import { logger } from "../../../utils/logger";
 import {
 	accountLinkUI,
@@ -59,22 +59,23 @@ export default {
 			return;
 		}
 
+		await interaction.deferReply();
+
 		// API 체크
 		if (!(await checkAPI(userData.uid, userData.ltuid, userData.ltoken))) {
 			if (user.id === interaction.user.id) {
 				const { embed, row } = await accountLinkUI(true);
-				const msg = await interaction.reply({
+				await interaction.editReply({
 					embeds: [embed],
 					components: [row],
 				});
+				const msg = await interaction.fetchReply();
 				await setupAccountLinkCollector(msg, user.id, userData);
 			} else {
-				await interaction.reply({ embeds: [expiredEmbed()], ephemeral: true });
+				await interaction.editReply({ embeds: [expiredEmbed()] });
 			}
 			return;
 		}
-
-		await interaction.deferReply();
 
 		// 게임 기록 임베드 생성
 		const gameRecord = await getGameRecord(

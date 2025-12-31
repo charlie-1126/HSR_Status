@@ -3,23 +3,33 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import type * as hoyolabType from "../types/hoyolabType";
 import {
-	fetchAchievement,
-	fetchActCalendar,
-	fetchCharacters,
-	fetchChests,
+	FetchType,
+	fetchDataFromHoyolab,
 	fetchGameRecord,
-	fetchLiveNote,
-	fetchUserInfo,
 } from "./fetchHoyolab";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
-async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
-	const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
+export async function getGameRecord(
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const userInfo = await fetchDataFromHoyolab(
+		FetchType.USERINFO,
+		uid,
+		ltuid,
+		ltoken,
+	);
 	const gameRecord = await fetchGameRecord(ltuid, ltoken);
-	const liveNote = await fetchLiveNote(uid, ltuid, ltoken);
+	const liveNote = await fetchDataFromHoyolab(
+		FetchType.LIVENOTE,
+		uid,
+		ltuid,
+		ltoken,
+	);
 
 	if (
 		!userInfo ||
@@ -87,9 +97,23 @@ async function getGameRecord(uid: string, ltuid: string, ltoken: string) {
 	return processedUserData;
 }
 
-async function getChestDetail(uid: string, ltuid: string, ltoken: string) {
-	const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
-	const chests_data = await fetchChests(uid, ltuid, ltoken);
+export async function getChestDetail(
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const userInfo = await fetchDataFromHoyolab(
+		FetchType.USERINFO,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const chests_data = await fetchDataFromHoyolab(
+		FetchType.CHESTS,
+		uid,
+		ltuid,
+		ltoken,
+	);
 	const gameRecord = await fetchGameRecord(ltuid, ltoken);
 	if (
 		!chests_data ||
@@ -130,13 +154,23 @@ async function getChestDetail(uid: string, ltuid: string, ltoken: string) {
 	} as hoyolabType.ChestDetail;
 }
 
-async function getAchievementDetail(
+export async function getAchievementDetail(
 	uid: string,
 	ltuid: string,
 	ltoken: string,
 ) {
-	const userInfo = await fetchUserInfo(uid, ltuid, ltoken);
-	const achievement_data = await fetchAchievement(uid, ltuid, ltoken);
+	const userInfo = await fetchDataFromHoyolab(
+		FetchType.USERINFO,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const achievement_data = await fetchDataFromHoyolab(
+		FetchType.ACHIEVEMENT,
+		uid,
+		ltuid,
+		ltoken,
+	);
 	const gameRecord = await fetchGameRecord(ltuid, ltoken);
 	if (
 		!achievement_data ||
@@ -174,10 +208,17 @@ async function getAchievementDetail(
 	} as hoyolabType.achievementDetail;
 }
 
-async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
-	const characters_data = await fetchCharacters(uid, ltuid, ltoken).then(
-		(res) => res.data.avatar_list,
-	);
+export async function getCharacterList(
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const characters_data = await fetchDataFromHoyolab(
+		FetchType.CHARACTERS,
+		uid,
+		ltuid,
+		ltoken,
+	).then((res) => res.data.avatar_list);
 	if (!characters_data) {
 		return null;
 	}
@@ -281,8 +322,17 @@ async function getCharacterList(uid: string, ltuid: string, ltoken: string) {
 	return characters as hoyolabType.Character[];
 }
 
-async function getEndContentRecord(uid: string, ltuid: string, ltoken: string) {
-	const actCalendar = await fetchActCalendar(uid, ltuid, ltoken);
+export async function getEndContentRecord(
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const actCalendar = await fetchDataFromHoyolab(
+		FetchType.ACTCALENDAR,
+		uid,
+		ltuid,
+		ltoken,
+	);
 	const gameRecord = await fetchGameRecord(ltuid, ltoken);
 	if (
 		!actCalendar ||
@@ -337,11 +387,3 @@ async function getEndContentRecord(uid: string, ltuid: string, ltoken: string) {
 		challengeRecord: challengeRecord,
 	};
 }
-
-export {
-	getGameRecord,
-	getChestDetail,
-	getCharacterList,
-	getAchievementDetail,
-	getEndContentRecord,
-};

@@ -3,9 +3,9 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import type { Client } from "discord.js";
-import { getOffset, setOffset } from "../utils/getOffset";
 import { getTimeData } from "../utils/getTimeData";
 import { logger } from "../utils/logger";
+import { getOffset, setOffset } from "../utils/tools/offsetManager";
 import { updateAllMessages } from "./updateMessages";
 
 dayjs.extend(utc);

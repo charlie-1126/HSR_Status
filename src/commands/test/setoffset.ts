@@ -7,8 +7,8 @@ import {
 	SlashCommandBuilder,
 } from "discord.js";
 import { updateAllMessages } from "../../services/updateMessages";
-import { setOffset } from "../../utils/getOffset";
 import { logger } from "../../utils/logger";
+import { setOffset } from "../../utils/tools/offsetManager";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

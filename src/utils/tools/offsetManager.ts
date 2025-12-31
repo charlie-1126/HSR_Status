@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 // 데이터 파일 생성(data/offset.json)
-const dataDir = path.join(__dirname, "../../data");
+const dataDir = path.join(__dirname, "../../../data");
 const offsetFilePath = path.join(dataDir, "offset.json");
 if (!fs.existsSync(offsetFilePath)) {
 	const initialOffsetData = {

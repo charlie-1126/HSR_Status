@@ -4,7 +4,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { fetchActCalendar } from "./fetchHoyolab";
-import { getOffset, setOffset } from "./getOffset";
+import { getOffset, setOffset } from "./tools/offsetManager";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

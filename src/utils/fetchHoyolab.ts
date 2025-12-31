@@ -34,25 +34,30 @@ function generateDS() {
 	return `${time},${random},${hash}`;
 }
 
-async function fetchActCalendar(
-	uid: string = UID,
-	ltuid_v2: string = LTUID,
-	ltoken_v2: string = LTOKEN,
-) {
+export enum FetchType {
+	ACTCALENDAR = "act_calendar",
+	USERINFO = "user_info",
+	LIVENOTE = "live_note",
+	CHARACTERS = "characters",
+	CHESTS = "chests",
+	ROGUETOURN = "rogue_tourn",
+	GRIDFIGHT = "grid_fight",
+	ACHIEVEMENT = "achievement",
+}
+
+export async function fetchGameRecord(ltuid: string, ltoken: string) {
 	const url =
-		"https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/get_act_calender";
-
-	const params = {
-		server: "prod_official_asia",
-		role_id: uid,
-	};
-
+		"https://sg-public-api.hoyolab.com/event/game_record/card/wapi/getGameRecordCard";
 	const headers = {
-		Cookie: `ltuid_v2=${ltuid_v2}; ltoken_v2=${ltoken_v2}`,
+		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
 		DS: generateDS(),
 		"x-rpc-app_version": "1.5.0",
 		"x-rpc-client_type": "5",
 		"x-rpc-language": "ko-kr",
+	};
+
+	const params = {
+		uid: ltuid,
 	};
 
 	try {
@@ -64,15 +69,34 @@ async function fetchActCalendar(
 		return response.data;
 	} catch (err: unknown) {
 		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
+			logger.error(`API 요청 오류 (GameRecord):`, err.response?.data || err);
 		}
 		return null;
 	}
 }
 
-async function fetchUserInfo(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/index?server=prod_official_asia&role_id=${uid}`;
+export async function fetchDataFromHoyolab(
+	type: FetchType,
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const baseUrl =
+		"https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api";
+	const server = "prod_official_asia";
 
+	const urlMap: Record<FetchType, string> = {
+		[FetchType.ACTCALENDAR]: `${baseUrl}/get_act_calender`,
+		[FetchType.USERINFO]: `${baseUrl}/index`,
+		[FetchType.LIVENOTE]: `${baseUrl}/note`,
+		[FetchType.CHARACTERS]: `${baseUrl}/avatar/info`,
+		[FetchType.CHESTS]: `${baseUrl}/chest_info`,
+		[FetchType.ROGUETOURN]: `${baseUrl}/rogue_tourn`,
+		[FetchType.GRIDFIGHT]: `${baseUrl}/grid_fight`,
+		[FetchType.ACHIEVEMENT]: `${baseUrl}/achievement_info`,
+	};
+
+	const url = urlMap[type];
 	const headers = {
 		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
 		DS: generateDS(),
@@ -81,203 +105,33 @@ async function fetchUserInfo(uid: string, ltuid: string, ltoken: string) {
 		"x-rpc-language": "ko-kr",
 	};
 
+	const params: Record<string, string> = {};
+
+	params.server = server;
+	params.role_id = uid;
+
+	// 특별한 파라미터
+	if (type === FetchType.CHARACTERS) {
+		params.need_wiki = "true";
+	} else if (type === FetchType.ROGUETOURN) {
+		params.need_detail = "true";
+	}
+
 	try {
 		const response = await axios.get(url, {
+			params,
 			headers,
 		});
 
 		return response.data;
 	} catch (err: unknown) {
 		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
+			logger.error(`API 요청 오류 (${type}):`, err.response?.data || err);
 		}
 		return null;
 	}
 }
 
-async function fetchGameRecord(ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/card/wapi/getGameRecordCard?uid=${ltuid}`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
+export async function fetchActCalendar() {
+	return await fetchDataFromHoyolab(FetchType.ACTCALENDAR, UID, LTUID, LTOKEN);
 }
-
-async function fetchLiveNote(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/note?server=prod_official_asia&role_id=${uid}`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-async function fetchCharacters(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/avatar/info?server=prod_official_asia&role_id=${uid}&need_wiki=true`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-async function fetchChests(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/chest_info?server=prod_official_asia&role_id=${uid}`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-async function fetchAchievement(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/achievement_info?server=prod_official_asia&role_id=${uid}`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-async function fetchRogueTourn(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/rogue_tourn?server=prod_official_asia&role_id=${uid}&need_detail=true`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-async function fetchGridFight(uid: string, ltuid: string, ltoken: string) {
-	const url = `https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/grid_fight?server=prod_official_asia&role_id=${uid}`;
-
-	const headers = {
-		Cookie: `ltuid_v2=${ltuid}; ltoken_v2=${ltoken}`,
-		DS: generateDS(),
-		"x-rpc-app_version": "1.5.0",
-		"x-rpc-client_type": "5",
-		"x-rpc-language": "ko-kr",
-	};
-
-	try {
-		const response = await axios.get(url, {
-			headers,
-		});
-
-		return response.data;
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			logger.error("API 요청 오류:", err.response?.data || err);
-		}
-		return null;
-	}
-}
-
-export {
-	fetchActCalendar,
-	fetchUserInfo,
-	fetchGameRecord,
-	fetchLiveNote,
-	fetchCharacters,
-	fetchChests,
-	fetchRogueTourn,
-	fetchGridFight,
-	fetchAchievement,
-};
