@@ -6,9 +6,8 @@ const dataDir = path.join(__dirname, "../../../data");
 const offsetFilePath = path.join(dataDir, "offset.json");
 if (!fs.existsSync(offsetFilePath)) {
 	const initialOffsetData = {
-		battleStart: "2025-12-05 05:00",
+		battleStart: "2025-12-08 05:00",
 		nextversionUpdate: null,
-		versionUpdate: null,
 		nextnextversionUpdate: null,
 		passEndTime: null,
 		previewProgramTime: null,
