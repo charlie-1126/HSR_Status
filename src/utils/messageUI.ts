@@ -293,10 +293,12 @@ export function menuSelectUI(cur: string, subjectId: string, cid: string) {
 				.setValue("endcontentrecord")
 				.setDefault(cur === "endcontentrecord"),
 			new StringSelectMenuOptionBuilder()
-				.setLabel("우주 전쟁 전적")
-				.setDescription("화폐 전쟁 및 차분화 우주 전적을 확인합니다.")
-				.setValue("weeklycontentrecord")
-				.setDefault(cur === "weeklycontentrecord"),
+				.setLabel("우주 분쟁 전적")
+				.setDescription(
+					"화폐 전쟁, 차분화 우주, 시뮬레이션 우주, 확장장치 전적을 확인합니다.",
+				)
+				.setValue("universeconflictrecord")
+				.setDefault(cur === "universeconflictrecord"),
 		)
 		.setPlaceholder("클릭하여 메뉴를 선택해주세요!");
 

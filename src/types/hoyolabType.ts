@@ -230,3 +230,42 @@ export interface achievementDetail {
 		max: number;
 	}[];
 }
+
+export interface UniverseConflictRecord {
+	nickname: string;
+	rogue: {
+		current_rogue_score: number;
+		max_rogue_score: number;
+		basic_info: {
+			buff_num: number;
+			miracle_num: number;
+			skill_points: number;
+		};
+		current_records: unknown;
+		last_records: unknown;
+	};
+	rogue_magic: {
+		basic_info: {
+			challenge_task_current_num: number;
+			challenge_task_total_num: number;
+			discover_secrets: string;
+			linear_tree_num: string;
+			magic_compendium: string;
+		};
+		records: unknown;
+	};
+}
+
+export interface RowDestiny {
+	desc: string;
+	level: number;
+}
+
+export interface RowRogueRecord {
+	final_lineup: {
+		icon: string;
+		level: number;
+		rank: number;
+		rarity: number;
+	}[];
+}

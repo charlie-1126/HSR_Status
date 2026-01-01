@@ -268,7 +268,7 @@ export async function getCharacterList(
 						level: char.equip.level,
 						icon: char.equip.icon,
 						rarity: char.equip.rarity,
-					}
+				  }
 				: null,
 			properties: char.properties.map((prop) => {
 				return {
@@ -385,5 +385,105 @@ export async function getEndContentRecord(
 	return {
 		nickname: hsrGameRecord.nickname,
 		challengeRecord: challengeRecord,
+	};
+}
+
+export async function getUniverseConflictRecord(
+	uid: string,
+	ltuid: string,
+	ltoken: string,
+) {
+	const rogueData = await fetchDataFromHoyolab(
+		FetchType.ROGUE,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const rogueMagicData = await fetchDataFromHoyolab(
+		FetchType.ROGUEMAGIC,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const rogueLocustData = await fetchDataFromHoyolab(
+		FetchType.ROGUELOCUST,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const rogueNousData = await fetchDataFromHoyolab(
+		FetchType.ROGUENOUS,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	const rogueTournData = await fetchDataFromHoyolab(
+		FetchType.ROGUETOURN,
+		uid,
+		ltuid,
+		ltoken,
+	);
+	if (
+		!rogueData ||
+		rogueData.retcode !== 0 ||
+		!rogueData.data ||
+		!rogueMagicData ||
+		rogueMagicData.retcode !== 0 ||
+		!rogueMagicData.data ||
+		!rogueLocustData ||
+		rogueLocustData.retcode !== 0 ||
+		!rogueLocustData.data ||
+		!rogueNousData ||
+		rogueNousData.retcode !== 0 ||
+		!rogueNousData.data ||
+		!rogueTournData ||
+		rogueTournData.retcode !== 0 ||
+		!rogueTournData.data
+	) {
+		return null;
+	}
+
+	return {
+		nickname: rogueData.data.role.nickname,
+		rogue: {
+			rogue_score: rogueData.data.current_record.basic.current_rogue_score,
+			max_rogue_score: rogueData.data.current_record.basic.max_rogue_score,
+			finish_cnt: rogueData.data.current_record.basic.finish_cnt,
+			bagic_info: {
+				buff_num: rogueData.data.basic_info.unlocked_buff_num,
+				miracle_num: rogueData.data.basic_info.unlocked_miracle_num,
+				skill_points: rogueData.data.basic_info.unlocked_skill_points,
+			},
+			current_records: rogueData.data.current_record.records,
+			last_records: rogueData.data.last_record.records,
+		},
+		rogue_magic: {
+			basic_info: {
+				challenge_task_current_num:
+					rogueMagicData.data.basic_info.challenge_task_current_num,
+				challenge_task_total_num:
+					rogueMagicData.data.basic_info.challenge_task_total_num,
+				discover_secrets: rogueMagicData.data.basic_info.discover_secrets,
+				linear_tree_num: rogueMagicData.data.basic_info.linear_tree_num,
+				magic_compendium: rogueMagicData.data.basic_info.magic_compendium,
+			},
+			records: rogueMagicData.data.normal_record_list,
+		},
+		rogue_locust: {
+			basic_info: {
+				event: rogueLocustData.data.basic_info.cnt.event,
+				miracle: rogueLocustData.data.basic_info.cnt.miracle,
+				narrow: rogueLocustData.data.basic_info.cnt.narrow,
+				destiny: rogueLocustData.data.basic_info.destiny.map(
+					(destiny: hoyolabType.RowDestiny) => {
+						return {
+							name: destiny.desc,
+							level: destiny.level,
+						};
+					},
+				),
+				records: rogueLocustData.data.detail.records,
+			},
+		},
 	};
 }

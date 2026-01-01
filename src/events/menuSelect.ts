@@ -12,18 +12,7 @@ import {
 import { getUserData } from "../services/dbHandler";
 import * as getHoyolabData from "../utils/getHoyolabData";
 import { logger } from "../utils/logger";
-import {
-	accountLinkUI,
-	achievementDetailEmbed,
-	chestDetailEmbed,
-	endContentEmbed,
-	expiredEmbed,
-	gameRecordEmbed,
-	menuSelectUI,
-	notExistEmbed,
-	playRecordEmbed,
-	setupAccountLinkCollector,
-} from "../utils/messageUI";
+import * as messageUI from "../utils/messageUI";
 import { checkAPI } from "../utils/tools/validation";
 
 export default {
@@ -36,7 +25,8 @@ export default {
 			!interaction.customId.startsWith("achievementDetail") &&
 			!interaction.customId.startsWith("playrecord") &&
 			!interaction.customId.startsWith("endcontentrecord") &&
-			!interaction.customId.startsWith("weeklycontentrecord")
+			!interaction.customId.startsWith("weeklycontentrecord") &&
+			!interaction.customId.startsWith("endcontentdetail")
 		)
 			return;
 
@@ -67,16 +57,16 @@ export default {
 		if (!userData) {
 			await interaction.deferUpdate();
 			if (subjectId === cid) {
-				const { embed, row } = await accountLinkUI(false);
+				const { embed, row } = await messageUI.accountLinkUI(false);
 				const msg = await original_message.edit({
 					embeds: [embed],
 					components: [row],
 					files: [],
 				});
-				await setupAccountLinkCollector(msg, subjectId);
+				await messageUI.setupAccountLinkCollector(msg, subjectId);
 			} else {
 				await original_message.edit({
-					embeds: [notExistEmbed()],
+					embeds: [messageUI.notExistEmbed()],
 					components: [],
 					files: [],
 				});
@@ -88,16 +78,16 @@ export default {
 		if (!(await checkAPI(userData.uid, userData.ltuid, userData.ltoken))) {
 			await interaction.deferUpdate();
 			if (subjectId === cid) {
-				const { embed, row } = await accountLinkUI(true);
+				const { embed, row } = await messageUI.accountLinkUI(true);
 				const msg = await original_message.edit({
 					embeds: [embed],
 					components: [row],
 					files: [],
 				});
-				await setupAccountLinkCollector(msg, subjectId, userData);
+				await messageUI.setupAccountLinkCollector(msg, subjectId, userData);
 			} else {
 				await original_message.edit({
-					embeds: [expiredEmbed()],
+					embeds: [messageUI.expiredEmbed()],
 					components: [],
 					files: [],
 				});
@@ -119,9 +109,9 @@ export default {
 				);
 				return;
 			}
-			const embed = await gameRecordEmbed(gameRecord);
+			const embed = await messageUI.gameRecordEmbed(gameRecord);
 
-			const select = menuSelectUI("mainprofile", subjectId, cid);
+			const select = messageUI.menuSelectUI("mainprofile", subjectId, cid);
 			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 				select,
 			);
@@ -140,9 +130,9 @@ export default {
 				userData.ltoken,
 			);
 			if (!gameRecord) return;
-			const embed = playRecordEmbed(gameRecord);
+			const embed = messageUI.playRecordEmbed(gameRecord);
 
-			const select = menuSelectUI("playrecord", subjectId, cid);
+			const select = messageUI.menuSelectUI("playrecord", subjectId, cid);
 
 			const ChestDetailBTN = new ButtonBuilder()
 				.setCustomId(`chestDetail:${subjectId}:${cid}`)
@@ -173,7 +163,7 @@ export default {
 				userData.ltoken,
 			);
 			if (!challengeRecord) return;
-			const select = menuSelectUI("endcontentrecord", subjectId, cid);
+			const select = messageUI.menuSelectUI("endcontentrecord", subjectId, cid);
 			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 				select,
 			);
@@ -184,15 +174,44 @@ export default {
 			const detailRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
 				detailBTN,
 			);
-			const embed = endContentEmbed(challengeRecord);
+			const embed = messageUI.endContentEmbed(challengeRecord);
 
 			await original_message.edit({
 				embeds: [embed],
 				components: [row, detailRow],
 				files: [],
 			});
-		} else if (selectedValue === "weeklycontentrecord") {
-			// 주간 콘텐츠 전적
+		} else if (selectedValue === "universeconflictrecord") {
+			// 우주 분쟁
+			const universeconflictrecord =
+				await getHoyolabData.getUniverseConflictRecord(
+					userData.uid,
+					userData.ltuid,
+					userData.ltoken,
+				);
+			if (!universeconflictrecord) return;
+			const select = messageUI.menuSelectUI(
+				"universeconflictrecord",
+				subjectId,
+				cid,
+			);
+			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+				select,
+			);
+			const detailBTN = new ButtonBuilder()
+				.setCustomId(`universeconflictrecorddetail:${subjectId}:${cid}`)
+				.setLabel("상세 보기")
+				.setStyle(ButtonStyle.Success);
+			const detailRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+				detailBTN,
+			);
+			const embed = messageUI.universeConflictEmbed(universeconflictrecord);
+
+			await original_message.edit({
+				embeds: [embed],
+				components: [row, detailRow],
+				files: [],
+			});
 		} else if (selectedValue === "chestDetail") {
 			const selectedIndex =
 				interaction.isStringSelectMenu() && customIdPrefix === "chestDetail"
@@ -205,7 +224,7 @@ export default {
 			);
 			if (!chestDetail) return;
 
-			const { embed, row } = await chestDetailEmbed(
+			const { embed, row } = await messageUI.chestDetailEmbed(
 				chestDetail,
 				selectedIndex,
 				subjectId,
@@ -231,8 +250,8 @@ export default {
 			);
 			if (!achievement_detail) return;
 
-			const embed = await achievementDetailEmbed(achievement_detail);
-			const select = menuSelectUI("none", subjectId, cid);
+			const embed = await messageUI.achievementDetailEmbed(achievement_detail);
+			const select = messageUI.menuSelectUI("none", subjectId, cid);
 			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
 				select,
 			);

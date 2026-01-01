@@ -40,9 +40,13 @@ export enum FetchType {
 	LIVENOTE = "live_note",
 	CHARACTERS = "characters",
 	CHESTS = "chests",
+	ACHIEVEMENT = "achievement",
+	ROGUE = "rogue",
+	ROGUEMAGIC = "rogue_magic",
+	ROGUELOCUST = "rogue_locust",
+	ROGUENOUS = "rogue_nous",
 	ROGUETOURN = "rogue_tourn",
 	GRIDFIGHT = "grid_fight",
-	ACHIEVEMENT = "achievement",
 }
 
 export async function fetchGameRecord(ltuid: string, ltoken: string) {
@@ -91,6 +95,10 @@ export async function fetchDataFromHoyolab(
 		[FetchType.LIVENOTE]: `${baseUrl}/note`,
 		[FetchType.CHARACTERS]: `${baseUrl}/avatar/info`,
 		[FetchType.CHESTS]: `${baseUrl}/chest_info`,
+		[FetchType.ROGUE]: `${baseUrl}/rogue`,
+		[FetchType.ROGUEMAGIC]: `${baseUrl}/rogue_magic`,
+		[FetchType.ROGUELOCUST]: `${baseUrl}/rogue_locust`,
+		[FetchType.ROGUENOUS]: `${baseUrl}/rogue_nous`,
 		[FetchType.ROGUETOURN]: `${baseUrl}/rogue_tourn`,
 		[FetchType.GRIDFIGHT]: `${baseUrl}/grid_fight`,
 		[FetchType.ACHIEVEMENT]: `${baseUrl}/achievement_info`,
@@ -110,10 +118,17 @@ export async function fetchDataFromHoyolab(
 	params.server = server;
 	params.role_id = uid;
 
-	// 특별한 파라미터
+	// 특별 파라미터
 	if (type === FetchType.CHARACTERS) {
 		params.need_wiki = "true";
-	} else if (type === FetchType.ROGUETOURN) {
+	}
+	if (
+		type === FetchType.ROGUETOURN ||
+		type === FetchType.ROGUELOCUST ||
+		type === FetchType.ROGUENOUS ||
+		type === FetchType.ROGUEMAGIC ||
+		type === FetchType.ROGUE
+	) {
 		params.need_detail = "true";
 	}
 
